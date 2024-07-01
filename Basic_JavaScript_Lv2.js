@@ -110,3 +110,109 @@ nonPositiveNumbers.forEach(num => {
   absNumbers.push(Math.abs(num));
 });
 console.log(absNumbers);
+
+// ######################################################################################################
+// 問題16
+// 次のようなオブジェクトがあります。
+// const inventory = [
+//   { item: "apple", quantity: 5 },
+//   { item: "banana", quantity: 10 },
+//   { item: "cherry", quantity: 0 },
+//   { item: "date", quantity: 7 }
+// ];
+// このオブジェクトの配列から、quantity プロパティの値が 1 以上のアイテム名だけを含む新しい配列を作成し、
+// その新しい配列をコンソールに出力する JavaScript コードを書いてください。
+// ######################################################################################################
+const inventory = [
+  { item: "apple", quantity: 5 },
+  { item: "banana", quantity: 10 },
+  { item: "cherry", quantity: 0 },
+  { item: "date", quantity: 7 }
+];
+let stockItem = [];
+inventory.forEach(item => {
+  if (item.quantity > 0) {
+    stockItem.push(item.item);
+  };
+});
+console.log(stockItem);
+
+// ######################################################################################################
+// 問題17
+// 次のような数値の配列があります。
+// const numbers01 = [4, 9, 16, 25, 36];
+// この配列の各要素の平方根を含む新しい配列を作成し、その新しい配列をコンソールに出力する JavaScript コードを書いてください。
+// ######################################################################################################
+const numbers01 = [4, 9, 16, 25, 36];
+const calcSqrt = (x) => {
+  return Math.sqrt(x);
+};
+const sqrtNumbers = [];
+numbers01.forEach(num => {
+  sqrtNumbers.push(calcSqrt(num))
+});
+console.log(sqrtNumbers);
+
+// ######################################################################################################
+// 問題18
+// 次のようなオブジェクトがあります。
+// const people = [
+//   { name: "Alice", age: 25 },
+//   { name: "Bob", age: 17 },
+//   { name: "Charlie", age: 19 },
+//   { name: "Dave", age: 16 }
+// ];
+// このオブジェクトの配列から、age プロパティの値が 18 以上の人の名前をコンソールに出力する JavaScript コードを書いてください。
+// ######################################################################################################
+const people = [
+  { name: "Alice", age: 25 },
+  { name: "Bob", age: 17 },
+  { name: "Charlie", age: 19 },
+  { name: "Dave", age: 16 }
+];
+people.forEach(human => {
+  if (human.age >= 18) {
+    console.log(human.name);
+  };
+});
+
+// ######################################################################################################
+// 問題19
+// 次のような文字列があります。
+// const str = "The quick brown fox jumps over the lazy dog";
+// この文字列の各単語の最初の文字だけを取り出して連結した新しい文字列を作成し、その新しい文字列をコンソールに出力する JavaScript コードを書いてください。
+// ######################################################################################################
+const str = "The quick brown fox jumps over the lazy dog";
+const wordsArray = str.split(' ');
+let initialStr = [];
+wordsArray.forEach(word => {
+  initialStr.push(word.slice(0, 1));
+});
+initialStr = initialStr.join('');
+console.log(initialStr);
+
+// ######################################################################################################
+// 問題20
+// 次のようなオブジェクトがあります。
+// const transactions = [
+//   { id: 1, amount: 100, type: "deposit" },
+//   { id: 2, amount: 50, type: "withdrawal" },
+//   { id: 3, amount: 200, type: "deposit" },
+//   { id: 4, amount: 150, type: "withdrawal" }
+// ];
+// このオブジェクトの配列から、type プロパティが "deposit" のトランザクションの amount プロパティの合計を計算し、
+// その合計をコンソールに出力する JavaScript コードを書いてください。
+// ######################################################################################################
+const transactions = [
+  { id: 1, amount: 100, type: "deposit" },
+  { id: 2, amount: 50, type: "withdrawal" },
+  { id: 3, amount: 200, type: "deposit" },
+  { id: 4, amount: 150, type: "withdrawal" }
+];
+let sum = 0;
+transactions.forEach(transaction => {
+  if (transaction.type == "deposit") {
+    sum += transaction.amount;
+  };
+});
+console.log(sum);
