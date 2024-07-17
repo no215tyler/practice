@@ -22,3 +22,4 @@ const evenOrOdd = (num: number): string => {
     return 'odd'
   }
 };
+
