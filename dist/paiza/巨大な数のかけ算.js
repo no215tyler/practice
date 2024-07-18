@@ -28,21 +28,36 @@ const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
-let inputLines = [];
-let n, m, k, l;
 let lineCount = 0;
+let s;
+let t;
 rl.on('line', (line) => {
     if (lineCount === 0) {
-        [n, m, k, l] = line.split(' ').map(Number);
+        s = line;
         lineCount++;
     }
     else {
-        inputLines.push(line.split(' ').map(Number));
+        t = parseInt(line, 10);
         lineCount++;
-        if (lineCount === n + 1) {
-            console.log(inputLines[k - 1][l - 1]);
+        if (lineCount === 2) {
             rl.close();
+            console.log(multiplyBigNumber(s, t));
         }
     }
 });
-// 35min + 
+function multiplyBigNumber(s, t) {
+    if (t === 0) {
+        return '0';
+    }
+    let ans = "";
+    let upper = 0;
+    for (let i = s.length - 1; i >= 0; i--) {
+        const z = parseInt(s[i], 10) * t + upper;
+        upper = Math.floor(z / 10);
+        ans = (z % 10).toString() + ans;
+        if (i === 0 && upper > 0) {
+            ans = upper.toString() + ans;
+        }
+    }
+    return ans;
+}
