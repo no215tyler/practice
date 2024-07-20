@@ -8,10 +8,8 @@ var resultAry = [];
 var mainFunc = function (lines) {
     aryA = lines[1].split(' ').map(Number);
     aryB = lines[2].split(' ').map(Number);
-    calculateAryA.push(Math.max.apply(Math, aryA));
-    calculateAryA.push(Math.min.apply(Math, aryA));
-    calculateAryB.push(Math.max.apply(Math, aryB));
-    calculateAryB.push(Math.min.apply(Math, aryB));
+    calculateAryA.push(Math.max.apply(Math, aryA), Math.min.apply(Math, aryA));
+    calculateAryB.push(Math.max.apply(Math, aryB), Math.min.apply(Math, aryB));
     calculateAryA.forEach(function (num1, i) {
         calculateAryB.forEach(function (num2, j) {
             resultAry.push(num1 * num2);

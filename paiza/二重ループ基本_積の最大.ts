@@ -9,10 +9,8 @@ let resultAry: number[] = [];
 const mainFunc = (lines: string[]): void => {
     aryA = lines[1].split(' ').map(Number);
     aryB = lines[2].split(' ').map(Number);
-    calculateAryA.push(Math.max(...aryA));
-    calculateAryA.push(Math.min(...aryA));
-    calculateAryB.push(Math.max(...aryB));
-    calculateAryB.push(Math.min(...aryB));
+    calculateAryA.push(Math.max(...aryA), Math.min(...aryA));
+    calculateAryB.push(Math.max(...aryB), Math.min(...aryB));
     calculateAryA.forEach((num1: number, i: number): void => {
         calculateAryB.forEach((num2: number, j: number): void => {
             resultAry.push(num1 * num2);
