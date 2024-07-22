@@ -26,3 +26,32 @@ interface AdminUser extends UserProp {
   role: string; // "admin", "leader", "manager"
 }
 
+// #########################
+//   typeの基本構文と拡張構文
+// #########################
+
+type UsersProp = {
+    userId: number;
+    name: string;
+    age: number;
+    email?: string;
+    isActive: boolean;
+  }
+  
+  // type 拡張名称 = 継承元 & {}
+  type AdminUserProps = UsersProp & {
+      role: string; // "admin", "leader", "manager"
+    }
+    
+const createAccount = (accountInfo: AdminUserProps) => {
+  // 処理
+};
+
+createAccount({
+  userId: 2,
+  name: "NOB",
+  age: 37,
+  email: "example@com",
+  isActive: true,
+  role: "admin",
+})
