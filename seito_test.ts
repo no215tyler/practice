@@ -55,3 +55,39 @@ createAccount({
   isActive: true,
   role: "admin",
 })
+
+// #########################
+//      classの基本構文
+// #########################
+
+class User {
+  userId: number;
+  name: string;
+  age: number;
+  email: string;
+  isActive: boolean;
+
+  constructor(userId: number, name: string, age: number, email: string, isActive: boolean) {
+      this.userId = userId;
+      this.name = name;
+      this.age = age;
+      this.email = email;
+      this.isActive = isActive;
+  }
+
+  // public: インスタンスメソッドとしてアクセス可能
+  // private: クラス内でアクセス可能
+  // protected: クラス内, サブクラス内からアクセス可
+  public getProfile(): string {
+      return `${this.age}歳 の ${this.name}です。`
+  }
+
+  // static: インスタンスメソッドにしなくても直に呼び出すことができる(public, privateなどと併用可)
+  static sayHelloWorld(): void {
+    console.log("Hello World");
+  }
+}
+
+const user = new User(1, "NOB", 37, "example@gmail.com", true);
+user.getProfile();
+User.sayHelloWorld();
