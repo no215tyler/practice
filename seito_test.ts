@@ -102,3 +102,17 @@ const foo = <T>(arg: T): T {
 
 // 関数を呼び出すときに型を決める
 foo<string>("Hello World");
+
+
+// #########################
+//     Null合体演算子(??)
+// #########################
+
+const fetchUserData = async () => {
+  const response = await fetch("https://API_endpoint", {
+    userId: 1,
+  });
+  return response.data.status; // true, false, null, undefinedが返ってくる可能性があるとする
+};
+const isActive: boolean = fetchUserData() ?? false;
+// 「??」をつけることでtrue / false以外の返り値だった場合もfalseを返すということができる
