@@ -116,3 +116,22 @@ const fetchUserData = async () => {
 };
 const isActive: boolean = fetchUserData() ?? false;
 // 「??」をつけることでtrue / false以外の返り値だった場合もfalseを返すということができる
+
+// #########################
+//     オプショナルチェーン
+// #########################
+
+const userInfoData = fetchUserData();
+  // {
+    // userId: 1,
+    // name: "John",
+    // age: 27,
+    // email: "example@gmail.com",
+    // family: {
+      // father: "Mike",
+      // mother: "Jane",
+    // }
+  // }
+
+const fatherName = userInfoData?.famile?.father; // Mike
+// 「?」を付けることで存在すれば取得するという意味になる（存在しないことも想定済みという構文）
