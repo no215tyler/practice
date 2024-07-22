@@ -91,3 +91,14 @@ class User {
 const user = new User(1, "NOB", 37, "example@gmail.com", true);
 user.getProfile();
 User.sayHelloWorld();
+
+// #########################
+//        ジェネリクス
+// #########################
+// 汎用性の高い関数やclassを作るときに用いられることが多い
+const foo = <T>(arg: T): T {
+  return arg;
+}
+
+// 関数を呼び出すときに型を決める
+foo<string>("Hello World");
