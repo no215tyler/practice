@@ -31,26 +31,66 @@
 // async/awaitを使用してください。
 // 非同期処理の際にはPromise.allを使用してください。
 
+// 評価: 10/10
+// ##############
+// フィードバック
+// ##############
+// 適切な非同期処理:
+// async/awaitの使用が適切であり、非同期処理を効率的に行っています。
+
+// Promise.allの使用:
+// 複数のAPIリクエストを並行して処理し、すべてのPromiseが解決された後に結果を取得している点が素晴らしいです。
+
+// 結果の統合:
+// ユーザー情報と投稿情報を適切に統合し、要求されたフォーマットで出力しています。
+
+// 改善点
+// 今回は完璧な実装でしたが、さらなる改善点として以下を考慮しても良いかもしれません：
+
+// エラーハンドリング:
+// ネットワークエラーやレスポンスエラーに対するエラーハンドリングを追加すると、コードがさらに堅牢になります。
+// 改善例
+// 以下はエラーハンドリングを追加した例です。
+
 // ユーザー情報の取得
 const fetchUsersData = async () => {
-  const response = await fetch("https://jsonplaceholder.typicode.com/users");
-  const users = await response.json();
-  return users;
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/users");
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const users = await response.json();
+    return users;
+  } catch (error) {
+    console.error('Fetch users data failed:', error);
+  }
 };
 
 // 各ユーザーの投稿情報の取得
 const fetchPostsForUsersData = async (users) => {
-  const promises = users.map(user =>
-    fetch(`https://jsonplaceholder.typicode.com/posts?userId=${user.id}`).then(res => res.json())
-  );
-  const posts = await Promise.all(promises);
-  return posts;
+  try {
+    const promises = users.map(user =>
+      fetch(`https://jsonplaceholder.typicode.com/posts?userId=${user.id}`).then(res => {
+        if (!res.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return res.json();
+      })
+    );
+    const posts = await Promise.all(promises);
+    return posts;
+  } catch (error) {
+    console.error('Fetch posts for users failed:', error);
+  }
 };
 
 // 結果の統合
 const getUsersWithPosts = async () => {
   const users = await fetchUsersData();
+  if (!users) return; // エラー時は処理を中断
+
   const posts = await fetchPostsForUsersData(users);
+  if (!posts) return; // エラー時は処理を中断
 
   const result = users.map((user, index) => ({
     userId: user.id,
@@ -65,4 +105,3 @@ const getUsersWithPosts = async () => {
 };
 
 getUsersWithPosts();
-
