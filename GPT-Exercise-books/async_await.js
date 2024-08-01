@@ -24,15 +24,32 @@
 // ID: 4, Title: eum et est occaecati
 // ID: 5, Title: nesciunt quas odio
 
+// 評価: 9/10
+// ###########################
+// フィードバック
+// ###########################
+// 非常に良くできています！async/awaitを使って非同期処理を上手に行っています。APIからデータをフェッチし、最初の5つのエントリを抽出してコンソールに表示する部分も正確に実装されています。ほぼ完璧ですが、若干の改善点を挙げておきます。
+
+// 改善点
+// Object.values の不要な使用:
+// dataは既に配列なので、Object.valuesを使う必要はありません。
+
+// エラーハンドリングの追加:
+// ネットワークエラーやデータのフェッチ失敗に対するエラーハンドリングを追加すると、コードがより堅牢になります。
+
 
 const getData = async () => {
-  let response = await fetch("https://jsonplaceholder.typicode.com/posts");
-  let data = await response.json();
-  for (let i = 0; i < 5; i++) {
-    let id = Object.values(data)[i].id;
-    let title = Object.values(data)[i].title;
-    console.log(`ID: ${id} Title: ${title}`)
+  try {
+    let response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    let data = await response.json();
+    for (let i = 0; i < 5; i++) {
+      let id = data[i].id;
+      let title = data[i].title;
+      console.log(`ID: ${id} Title: ${title}`)
+    }
+  } catch (error) {
+    console.log("Fetch error: ", error)
   }
 }
-
+  
 getData();
