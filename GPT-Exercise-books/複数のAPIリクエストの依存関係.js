@@ -33,51 +33,52 @@
   //   ]
   // }
 
-const fetchUser = async () => {
-  try {
-    const response = await fetch("https://jsonplaceholder.typicode.com/users/1");
-    const userData = await response.json();
-    return userData;
-  } catch (error) {
-    console.log("Fetch UserData Failed", error);
-  }
-};
+// 評価: 10/10
+// #############
+// フィードバック
+// #############
+// 非同期処理をうまく扱い、APIリクエストの依存関係を管理し、データを正しく統合しています。以下の点が特に優れていると感じました：
 
-const fetchAlbamData = async (user) => {
-  try {
-    const responseAlbams = await fetch(`https://jsonplaceholder.typicode.com/albums?userId=${user.id}`);
-    const albams = await responseAlbams.json();
-    return albams
-  } catch (error) {
-    console.log("Fetch AlbamsData Failed", error);
-  }
-};
+// 適切な非同期処理:
+// async/awaitを使用して、各非同期操作を順次実行しています。
 
-const fetchPhotoData = async (albams) => {
+// Promise.allの使用:
+// 複数のアルバムに対する写真情報の取得にPromise.allを使用して効率的にデータを取得しています。
+
+// エラーハンドリング:
+// 各フェッチ操作で適切にエラーハンドリングを実装しています。
+
+// 改善点
+// 全体的に非常に良い実装ですが、いくつかの改善点を考慮することでコードがさらに堅牢になります：
+
+// フェッチ関数の一般化:
+// フェッチ関数を一般化して、どのエンドポイントにも対応できるようにすることでコードの再利用性を高めることができます。
+// 改善例
+// 以下はフェッチ関数を一般化した例です。
+
+const fetchData = async (url) => {
   try {
-    const promises = albams.map(albam => 
-      fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${albam.id}`)
-      .then(res => {
-        if (!res.ok) {
-          throw new Error("fetchPhotoレスポンスエラー");
-        }
-        return res.json();
-      })
-    )
-    const photos = await Promise.all(promises);
-    return photos
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    return data;
   } catch (error) {
-    console.log("Fetch PhotosData Failed", error);
+    console.error(`Fetch data failed from ${url}:`, error);
   }
 };
 
 const mergeData = async () => {
-  const user = await fetchUser();
-  const albams = await fetchAlbamData(user);
-  const photosArray = await fetchPhotoData(albams);
-  // console.log(`Userデータ: ${JSON.stringify(user)}`);
-  // console.log(`Albamsデータ: ${JSON.stringify(albams)}`);
-  // console.log(`Photosデータ: ${JSON.stringify(photosArray)}`);
+  const user = await fetchData("https://jsonplaceholder.typicode.com/users/1");
+  if (!user) return;
+
+  const albams = await fetchData(`https://jsonplaceholder.typicode.com/albums?userId=${user.id}`);
+  if (!albams) return;
+
+  const promises = albams.map(albam => fetchData(`https://jsonplaceholder.typicode.com/photos?albumId=${albam.id}`));
+  const photosArray = await Promise.all(promises);
+  if (!photosArray) return;
 
   const result = {
     userId: user.id,
@@ -85,12 +86,13 @@ const mergeData = async () => {
     albams: albams.map((albam, index) => ({
       albamId: albam.id,
       title: albam.title,
-      photos: photosArray[index].map(photo =>({
+      photos: photosArray[index].map(photo => ({
         photoId: photo.id,
         title: photo.title,
       }))
     }))
-  }
+  };
+  
   console.log(JSON.stringify(result, null, 2));
 };
 
