@@ -1,24 +1,24 @@
-// 問題 5: コンストラクタの利用
-// Bookクラスを定義し、タイトルと著者を持つオブジェクトを生成できるようにコンストラクタを定義してください。
-// さらに、describeメソッドでその本の情報を表示するようにしてください。
+// 問題 6: オブジェクトのメソッド呼び出し
+// Studentクラスを定義し、名前と学年を持つオブジェクトを生成し、introduceメソッドで
+// 「私は◯◯です。◯年生です。」と表示するようにしてください。
 
 public class Main {
   public static void main(String[] args) {
-    Book book = new Book("リーダブルコード", "O.REILLY");
-    book.describe();
+    Student student = new Student("Elena", 4);
+    student.introduce();
   }
 }
 
-class Book {
-  String title;
-  String author;
+class Student {
+  String name;
+  int schoolGrade;
 
-  public Book(String title, String author) {
-    this.title = title;
-    this.author = author;
+  public Student(String name, int schoolGrade) {
+    this.name = name;
+    this.schoolGrade = schoolGrade;
   }
 
-  public void describe() {
-    System.out.println(String.format("本のタイトル: %s\n著者: %s", title, author));
+  public void introduce() {
+    System.out.println(String.format("私は%sです。%d年生です。", name, schoolGrade));
   }
 }
