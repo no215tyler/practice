@@ -1,24 +1,24 @@
-// 問題 4: クラスの定義とオブジェクト生成
-// Carクラスを定義し、maker（メーカー）とmodel（モデル）の属性を持たせ、それらを表示するdisplayInfoメソッドを作成してください。
-// さらに、このクラスからオブジェクトを生成して、displayInfoメソッドを呼び出してみてください。
+// 問題 5: コンストラクタの利用
+// Bookクラスを定義し、タイトルと著者を持つオブジェクトを生成できるようにコンストラクタを定義してください。
+// さらに、describeメソッドでその本の情報を表示するようにしてください。
 
 public class Main {
   public static void main(String[] args) {
-    Car car = new Car("TOYOTA", "ROOMY");
-    car.displayInfo();
+    Book book = new Book("リーダブルコード", "O.REILLY");
+    book.describe();
   }
 }
 
-class Car {
-  String maker;
-  String model;
+class Book {
+  String title;
+  String author;
 
-  public Car(String maker, String model) {
-    this.maker = maker;
-    this.model = model;
+  public Book(String title, String author) {
+    this.title = title;
+    this.author = author;
   }
 
-  public void displayInfo(){
-    System.out.println(String.format("メーカー: %s\nモデル: %s", maker, model));
+  public void describe() {
+    System.out.println(String.format("本のタイトル: %s\n著者: %s", title, author));
   }
 }
