@@ -1,11 +1,16 @@
-// 問題 2: メソッドの定義
-// 引数として渡された数値を2倍にして返すメソッドdoubleValueを作成し、そのメソッドを使って値を2倍にして出力してください。
+// 問題 3: 条件分岐
+// 引数として渡された数値が偶数か奇数かを判定し、偶数なら「Even」、奇数なら「Odd」と出力するメソッドcheckEvenOddを作成してください。
 class Main {
   public static void main(String[] args) {
-    System.out.println(doubleValue(10));
+    System.out.println(checkEvenOdd(64));
+    System.out.println(checkEvenOdd(303));
   }
 
-  public static Integer doubleValue(int num) {
-    return num * 2;
+  public static String checkEvenOdd(int num) {
+    if (num % 2 == 0) {
+      return "Even";
+    } else {
+      return "Odd";
+    }
   }
 }
