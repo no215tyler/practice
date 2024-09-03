@@ -1,12 +1,14 @@
-import java.util.*;
-
 public class Main {
   public static void main(String[] args) {
-    Scanner sc = new Scanner(System.in);
-    String[] strNums = sc.nextLine().split(" ");
-    for (int i = 0; i < strNums.length; i += 3) {
-      System.out.println(String.format("%s %s %s", strNums[i], strNums[i + 1], strNums[i + 2]));
+    for (int i = 1; i <= 9; i++) {
+      for (int j = 1; j <= 9; j++) {
+        if (j == 9) {
+          System.out.print(i * j);
+        } else {
+          System.out.print((i * j) + " ");
+        }
+      }
+      System.out.println();
     }
-    sc.close();
   }
 }
