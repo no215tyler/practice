@@ -2,13 +2,9 @@ import java.util.*;
 public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
-    String str1 = sc.next();
-    String str2 = sc.next();
-    if (str1.equals(str2)) {
-      System.out.println("OK");
-    } else {
-      System.out.println("NG");
-    }
+    String local = sc.nextLine();
+    String domain = sc.nextLine();
+    System.out.println(String.format("%s@%s", local, domain));
     sc.close();
   }
 }
