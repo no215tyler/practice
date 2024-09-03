@@ -1,13 +1,12 @@
 import java.util.*;
+import java.text.NumberFormat;
+import java.math.BigInteger;
 public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
-    String[] strNums = new String[10];
-    for (int i = 0; i < 10; i++) {
-      strNums[i] = sc.next();
-    }
-    String result = String.join(" | ", strNums);
-    System.out.println(result);
+    BigInteger num = sc.nextBigInteger();
+    NumberFormat nfNum = NumberFormat.getNumberInstance();
+    System.out.println(nfNum.format(num));
     sc.close();
   }
 }
