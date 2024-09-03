@@ -7,8 +7,13 @@ public class Main {
     for (int i = 0; i < strNums.length; i++) {
       nums[i] = Integer.parseInt(strNums[i]);
     }
-    int D = nums[0] - nums[1];
-    int P = nums[0] * nums[1];
-    System.out.println(String.format("%d %d", D, P));
+    int A = nums[0];
+    int B = nums[1];
+    int C = nums[2];
+    int N = 0;
+    N += A;
+    N *= B;
+    N %= C;
+    System.out.println(N);
   }
 }
