@@ -2,18 +2,16 @@ import java.util.*;
 public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
-    String[] strNums = sc.nextLine().split(" ");
-    int[] nums = new int[strNums.length];
-    for (int i = 0; i < strNums.length; i++) {
-      nums[i] = Integer.parseInt(strNums[i]);
+    String str = sc.nextLine();
+    if (Objects.equals(str, "paiza")) {
+      System.out.println("YES");
+    } else {
+      System.out.println("NO");
     }
-    int A = nums[0];
-    int B = nums[1];
-    int C = nums[2];
-    int N = 0;
-    N += A;
-    N *= B;
-    N %= C;
-    System.out.println(N);
   }
 }
+
+// 文字列比較は「==演算子」ではなくequalsメソッドを使う
+// 文字列変数.equals(比較対象);
+// もしくは
+// Objects.equals(文字列, 比較対象);
