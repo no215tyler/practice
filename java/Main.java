@@ -1,24 +1,11 @@
-// 問題 6: オブジェクトのメソッド呼び出し
-// Studentクラスを定義し、名前と学年を持つオブジェクトを生成し、introduceメソッドで
-// 「私は◯◯です。◯年生です。」と表示するようにしてください。
-
+import java.util.*;
 public class Main {
   public static void main(String[] args) {
-    Student student = new Student("Elena", 4);
-    student.introduce();
-  }
-}
-
-class Student {
-  String name;
-  int schoolGrade;
-
-  public Student(String name, int schoolGrade) {
-    this.name = name;
-    this.schoolGrade = schoolGrade;
-  }
-
-  public void introduce() {
-    System.out.println(String.format("私は%sです。%d年生です。", name, schoolGrade));
+    Scanner sc = new Scanner(System.in);
+    int A = 437326;
+    int B = 9085;
+    int X = A / B;
+    int Y = A % B;
+    System.out.println(String.format("%d %d", X, Y));
   }
 }
