@@ -2,9 +2,13 @@ import java.util.*;
 public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
-    String local = sc.nextLine();
-    String domain = sc.nextLine();
-    System.out.println(String.format("%s@%s", local, domain));
+    int n = sc.nextInt();
+    String[] asterisk = new String[n];
+    for (int i = 0; i < n; i++) {
+      asterisk[i] = "*";
+    }
+    String result = String.join("", asterisk);
+    System.out.println(result);
     sc.close();
   }
 }
