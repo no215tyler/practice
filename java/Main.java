@@ -4,22 +4,17 @@ public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
     int N = sc.nextInt();
-    int M = sc.nextInt();
-    for (int i = 1; i <= N; i++) {
-      System.out.print(i);
-      if (i == N) {
-        System.out.println();
-      } else {
-        System.out.print(" ");
-      }
-    }
+    ArrayList<Integer> list = new ArrayList<>();
 
-    for (int i = 1; i <= M; i++) {
-      System.out.print(i);
-      if (i == M) {
-        System.out.println();
-      } else {
-        System.out.print(" ");
+    for (int i = 1; i <= N; i++) {
+      list.add(i);
+      for (int j = 0; j < list.size(); j++) {
+        System.out.print(list.get(j));
+        if (j == list.size() - 1) {
+          System.out.println();
+        } else {
+          System.out.print(" ");
+        }
       }
     }
 
