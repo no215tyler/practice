@@ -1,29 +1,25 @@
-// 問題 9: 複数のインターフェースの実装
-// SwimmableとRunnableという2つのインターフェースを作成し、それぞれswimとrunというメソッドを持たせます。
-// そして、これらのインターフェースを実装するAthleteクラスを作成し、swimとrunメソッドでそれぞれのアクションを表示してください。
-
-interface Swimmable {
-  void swim();
-}
-
-interface Runnable {
-  void run();
-}
-
-class Athlete {
-  public void swim() {
-    System.out.println("泳ぎます");
-  }
-
-  public void run() {
-    System.out.println("走ります");
-  }
-}
+import java.util.*;
 
 public class Main {
   public static void main(String[] args) {
-    Athlete athlete = new Athlete();
-    athlete.swim();
-    athlete.run();
+    Scanner sc = new Scanner(System.in);
+    int N = sc.nextInt();
+    int halfNum = N / 2;
+    for (int i = 1; i <= halfNum; i++) {
+      if (i == halfNum) {
+        System.out.println(i);
+      } else {
+        System.out.print(i + " ");
+      }
+    }
+    for (int i = (halfNum + 1); i <= N; i++) {
+      if (i == N) {
+        System.out.println(i);
+      } else {
+        System.out.print(i + " ");
+      }
+    }
+
+    sc.close();
   }
 }
