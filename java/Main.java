@@ -6,13 +6,13 @@ public class Main {
     String[] strNums = sc.nextLine().split(" ");
     int H = Integer.parseInt(strNums[0]);
     int W = Integer.parseInt(strNums[1]);
-    String A = strNums[2];
-    String B = strNums[3];
-    int separatorCount = (W * 6) + ((W - 1) * 3);
+    int A = Integer.parseInt(strNums[2]);
+    int B = Integer.parseInt(strNums[3]);
+    int separatorCount = (W * 22) + ((W - 1) * 3);
 
     for (int i = 0; i < H; i++) {
       for (int j = 0; j < W; j++) {
-        System.out.print(String.format("(%s, %s)", A, B));
+        System.out.print(String.format("(%9d, %9d)", A, B));
         if (j == W - 1) {
           System.out.println();
           if (!(i == H - 1)) {
