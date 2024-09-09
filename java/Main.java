@@ -9,11 +9,11 @@ public class Main {
     int A = Integer.parseInt(inputNums[0]);
     int B = Integer.parseInt(inputNums[1]);
     int C = Integer.parseInt(inputNums[2]);
+    int D = Integer.parseInt(inputNums[3]);
 
-    int X = A * A;
-    int Y = (B * B) + (C * C);
+    int N = (int) Math.pow(((A + B) * C), 2) % D;
 
-    System.out.println(String.format("%d %d", X, Y));
+    System.out.println(N);
 
     sc.close();
   }
