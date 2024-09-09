@@ -8,11 +8,7 @@ public class Main {
     int A = Integer.parseInt(inputNum[0]);
     int B = Integer.parseInt(inputNum[1]);
 
-    if (A == 1 || B == 1) {
-      System.out.println(1);
-    } else {
-      System.out.println(0);
-    }
+    System.out.println(A ^ B);
 
     sc.close();
   }
