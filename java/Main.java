@@ -6,22 +6,14 @@ public class Main {
 
     // 1行目の処理
     String[] inputNums = sc.nextLine().split(" ");
-    int H = Integer.parseInt(inputNums[0]);
-    int W = Integer.parseInt(inputNums[1]);
-    int r = Integer.parseInt(inputNums[2]) - 1;
-    int c = Integer.parseInt(inputNums[3]) - 1;
+    int A = Integer.parseInt(inputNums[0]);
+    int B = Integer.parseInt(inputNums[1]);
+    int C = Integer.parseInt(inputNums[2]);
 
-    String[][] board = new String[H][W];
-    for (int i = 0; i < H; i++) {
-      board[i] = sc.nextLine().split("");
-    }
+    int X = A * A;
+    int Y = (B * B) + (C * C);
 
-    // 変数r, cで指定した位置が壁（#）かそうじゃないか判定
-    if (board[r][c].equals("#")) {
-      System.out.println("Yes");
-    } else {
-      System.out.println("No");
-    }
+    System.out.println(String.format("%d %d", X, Y));
 
     sc.close();
   }
