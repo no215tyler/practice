@@ -8,10 +8,11 @@ public class Main {
     int A = Integer.parseInt(inputNum[0]);
     int B = Integer.parseInt(inputNum[1]);
 
-    int N = 10000;
-    N /= A;
-    N %= B;
-    System.out.println(N);
+    if (A == 1 && B == 1) {
+      System.out.println(1);
+    } else {
+      System.out.println(0);
+    }
 
     sc.close();
   }
