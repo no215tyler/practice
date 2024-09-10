@@ -6,23 +6,12 @@ public class Main {
 
     String[] inputStrNums = sc.nextLine().split(" ");
     int N = Integer.parseInt(inputStrNums[0]);
-    int M = Integer.parseInt(inputStrNums[1]);
+    int K = Integer.parseInt(inputStrNums[1]) - 1;
 
-    int[] numsArray = new int[M];
+    String[] strs = sc.nextLine().split(" ");
+    Arrays.sort(strs);
 
-    String[] strNumsArray = sc.nextLine().split(" ");
-    for (int i = 0; i < M; i++) {
-      numsArray[i] = Integer.parseInt(strNumsArray[i]);
-    }
-
-    int count = 0;
-    for (int num : numsArray) {
-      if (num == N) {
-        count += 1;
-      }
-    }
-
-    System.out.println(count);
+    System.out.println(strs[K]);
 
     sc.close();
   }
