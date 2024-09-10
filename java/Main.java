@@ -7,19 +7,22 @@ public class Main {
     String[] inputStrNums = sc.nextLine().split(" ");
     int N = Integer.parseInt(inputStrNums[0]);
     int M = Integer.parseInt(inputStrNums[1]);
-    int K = Integer.parseInt(inputStrNums[2]) - 1;
-    int L = Integer.parseInt(inputStrNums[3]) - 1;
 
-    int[][] numsArray = new int[N][M];
+    int[] numsArray = new int[M];
 
-    for (int i = 0; i < N; i++) {
-      String[] strNumsArray = sc.nextLine().split(" ");
-      for (int j = 0; j < M; j++) {
-        numsArray[i][j] = Integer.parseInt(strNumsArray[j]);
+    String[] strNumsArray = sc.nextLine().split(" ");
+    for (int i = 0; i < M; i++) {
+      numsArray[i] = Integer.parseInt(strNumsArray[i]);
+    }
+
+    int count = 0;
+    for (int num : numsArray) {
+      if (num == N) {
+        count += 1;
       }
     }
 
-    System.out.println(numsArray[K][L]);
+    System.out.println(count);
 
     sc.close();
   }
