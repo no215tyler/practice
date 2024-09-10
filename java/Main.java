@@ -1,15 +1,21 @@
 import java.util.*;
-import java.math.BigInteger;
 
 public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
 
-    BigInteger S = sc.nextBigInteger();
-    BigInteger T = sc.nextBigInteger();
-    BigInteger result = S.multiply(T);
+    String[] inputStrNums = sc.nextLine().split(" ");
+    int N = Integer.parseInt(inputStrNums[0]);
+    int K = Integer.parseInt(inputStrNums[1]) - 1;
 
-    System.out.println(result);
+    String[] strNumsArray = sc.nextLine().split(" ");
+    int[] numsArray = new int[N];
+
+    for (int i = 0; i < N; i++) {
+      numsArray[i] = Integer.parseInt(strNumsArray[i]);
+    }
+
+    System.out.println(numsArray[K]);
 
     sc.close();
   }
