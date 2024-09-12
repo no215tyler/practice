@@ -4,24 +4,15 @@ public class Main {
     public static void main(String[] args) {
       Scanner sc = new Scanner(System.in);
 
-      int N = sc.nextInt();
-      int[] nums = new int[N];
+      String[] inputNums = sc.nextLine().split(" ");
+      int X = Integer.parseInt(inputNums[0]);
+      int Y = Integer.parseInt(inputNums[1]);
+      int Z = Integer.parseInt(inputNums[2]);
 
-      for (int i = 0; i < N; i++) {
-        nums[i] = sc.nextInt();
-      }
-
-      boolean flg = false;
-      for (int num : nums) {
-        if (num == 0) {
-          flg = true;
-        }
-      }
-
-      if (flg == true) {
-        System.out.println("NO");
-      } else {
+      if ((Z >= 10) || ((X >= 10) && (Y >= 10))) {
         System.out.println("YES");
+      } else {
+        System.out.println("NO");
       }
 
       sc.close();
