@@ -4,15 +4,16 @@ public class Main {
     public static void main(String[] args) {
       Scanner sc = new Scanner(System.in);
 
-      String[] inputNums = sc.nextLine().split(" ");
-      int X = Integer.parseInt(inputNums[0]);
-      int Y = Integer.parseInt(inputNums[1]);
-      int Z = Integer.parseInt(inputNums[2]);
+      int N = sc.nextInt();
 
-      if ((Z >= 10) || ((X >= 10) && (Y >= 10))) {
-        System.out.println("YES");
+      if ((N % 5 == 0) && (N % 3 == 0)) {
+        System.out.println("FizzBuzz");
+      } else if (N % 5 == 0) {
+        System.out.println("Buzz");
+      } else if (N % 3 == 0) {
+        System.out.println("Fizz");
       } else {
-        System.out.println("NO");
+        System.out.println(N);
       }
 
       sc.close();
