@@ -1,9 +1,12 @@
-// 問題 5: 文字列をアルファベット順にソートする
-// 文字列の配列が与えられます。その配列をアルファベット順にソートして出力してください。
+// # 問題 6: 配列内のすべての要素が正の数かどうかを確認する
+// 整数の配列が与えられます。その中のすべての要素が正の数であるかどうかを確認してください。結果は true または false で返します。
 
 // 例
-// 入力: {"Banana", "Apple", "Cherry", "Date"}
-// 出力: {"Apple", "Banana", "Cherry", "Date"}
+// 入力: {1, 2, 3, 4, 5}
+// 出力: true
+
+// 入力: {1, -2, 3, 4, 5}
+// 出力: false
 
 import java.util.*;
 
@@ -11,41 +14,44 @@ public class Main {
     public static void main(String[] args) {
       Scanner sc = new Scanner(System.in);
 
-      String[] strs = sc.nextLine().split(" ");
-      int[] fruitCount = {strs.length};
-      Arrays.stream(strs).sorted().forEach(fruit -> {
-        fruitCount[0] -= 1;
-        System.out.print(fruit);
-        if (fruitCount[0] == 0) {
-          System.out.println();
-        } else {
-          System.out.print(", ");
-        }
-      });
+      try {
+        int[] nums = Arrays.stream(sc.nextLine().split(" "))
+                          .mapToInt(Integer::parseInt)
+                          .toArray();
+
+        boolean bool = Arrays.stream(nums).allMatch(num -> num > 0);
+        System.out.println(bool);
+      } catch (NumberFormatException e) {
+        System.out.println("配列が空です" + e.getMessage());
+      }
 
       sc.close();
     }
 }
 
-// フィードバック
+// 【フィードバック】
 // 改善点:
-// 冗長な出力制御:
+// エラーメッセージの適切さ:
 
-// fruitCount[0]を使用してカウントダウンし、カンマを制御する方法は工夫されていますが、Collectors.joiningを使うとよりシンプルに実装可能です。以下のようにすることでコードの可読性が向上します。
-// java
-// コードをコピーする
-// System.out.println(Arrays.stream(strs).sorted().collect(Collectors.joining(", ")));
-// Collectors.joining(", ")を使うと、カンマ区切りで要素を簡単に出力できます。
+// NumberFormatExceptionは、空の配列以外にも不正な入力（例えば数字でない文字が含まれる場合）で発生するため、メッセージを「不正な入力が含まれています」など、もう少し汎用的にする方が望ましいです。
+// 空の配列に対して特別に対応する場合は、事前に入力が空かどうかをチェックした方が明確です。
+// 不要な例外処理:
 
-// 配列の長さ取得方法の冗長さ:
+// 配列が空であるかどうかは、例外を使わずに事前に判定することが可能です。たとえば、入力文字列が空かどうかをisEmpty()で確認できます。
+// 例外処理は基本的に例外的なケースで使用するのが推奨されるため、通常の処理で検出できるエラーは事前に処理しましょう。
 
-// fruitCountで配列の長さを保持する必要はなく、strs.lengthで必要に応じてそのまま使えます。また、配列長を使ってカウントダウンするのはやや冗長です。
-// 変数名の適切さ:
+      // if (input.isEmpty()) {
+      //   System.out.println("入力が空です");
+      // } else {
+      //   try {
+      //     int[] nums = Arrays.stream(input.split(" "))
+      //                       .mapToInt(Integer::parseInt)
+      //                       .toArray();
 
-// fruitCountという変数名は、ソートと出力制御の文脈では適切ではないかもしれません。機能に即した名前を付けるとわかりやすくなります。
-// 【例】
-    // String[] strs = sc.nextLine().split(" ");
-    // // Collectors.joiningを使ってカンマ区切りの文字列を生成
-    // System.out.println(Arrays.stream(strs).sorted().collect(Collectors.joining(", ")));
-
+      //     boolean bool = Arrays.stream(nums).allMatch(num -> num > 0);
+      //     System.out.println(bool);
+      //   } catch (NumberFormatException e) {
+      //     System.out.println("不正な入力が含まれています: " + e.getMessage());
+      //   }
+      // }
 
