@@ -2,21 +2,18 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-      Scanner sc = new Scanner(System.in);
 
-      String[] inputNums = sc.nextLine().split(" ");
-      int N = Integer.parseInt(inputNums[0]);
-      int K = Integer.parseInt(inputNums[1]);
-      int T = Integer.parseInt(inputNums[2]);
+      int[] nums = {-100, 2, 3, 5, 8};
 
-      int walkDistance = N * K;
+      int min = Arrays.stream(nums)
+                      .min()
+                      .getAsInt();
 
-      if (walkDistance > T) {
-        System.out.println("NO");
-      } else {
-        System.out.println("YES");
-      }
+      int max = Arrays.stream(nums)
+                      .max()
+                      .getAsInt();
 
-      sc.close();
+      System.out.println(min);
+      System.out.println(max);
     }
 }
