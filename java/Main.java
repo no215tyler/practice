@@ -1,12 +1,10 @@
-// 問題 8: 配列内の奇数をすべて3倍にして新しい配列を作る
-// 整数の配列が与えられます。配列の中の奇数のみを3倍にして、新しい配列を作成してください。
+// # 問題 9: 配列内の要素の平均を求める
+// 整数の配列が与えられます。その配列の平均値を求めてください。小数点も含めた値で出力してください。
 
-// 例
-// 入力: {1, 2, 3, 4, 5}
-// 出力: {3, 2, 9, 4, 15}
+// 例 入力: {10, 20, 30, 40, 50}
+// 出力: 30.0
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -14,20 +12,19 @@ public class Main {
       String input = sc.nextLine();
 
       if (input.isEmpty()) {
-        System.out.println("入力が空です");
+        System.out.println("配列が空です");
       } else {
         try {
           int[] nums = Arrays.stream(input.split(" "))
-                            .mapToInt(Integer::parseInt)
-                            .map(n -> (n % 2 == 1) ? (n * 3) : n)
-                            .toArray();
+                      .mapToInt(Integer::parseInt)
+                      .toArray();
 
-          System.out.println(Arrays.stream(nums)
-                            .mapToObj(String::valueOf)
-                            .collect(Collectors.joining(", ")));
-
+          OptionalDouble average = Arrays.stream(nums).average();
+          // 値が存在しない場合はデフォルト値 0.0 を返す（nullチェック）
+          double result = average.orElse(0.0);
+          System.out.println(result);
         } catch (NumberFormatException e) {
-          System.out.println("不正な入力が含まれています " + e.getMessage());
+          System.out.println("不正な入力があります: " + e.getMessage());
         }
       }
 
