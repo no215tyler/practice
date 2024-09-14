@@ -3,6 +3,7 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
       Scanner sc = new Scanner(System.in);
+      int bufNum = Integer.parseInt(sc.nextLine());
 
       String input = sc.nextLine();
       if (input.isEmpty()) {
@@ -13,12 +14,13 @@ public class Main {
                       .mapToInt(Integer::parseInt)
                       .toArray();
 
-          for (int num : nums) {
-            System.out.println(num);
-            if (num == -1) {
-              break;
+          Arrays.stream(nums).forEach(n -> {
+            if (n % 2 == 0) {
+              System.out.println("even");
+            } else {
+              System.out.println("odd");
             }
-          }
+          });
         } catch (NumberFormatException e) {
           System.out.println("不正な入力があります: " + e.getMessage());
         }
