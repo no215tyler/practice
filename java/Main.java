@@ -1,28 +1,19 @@
+// 問題 10: 基本的な例外処理
+// 					ユーザーに数値を入力してもらい、10をその数値で割った結果を表示するプログラムを作成してください。
+// 					ただし、0で割ろうとした場合は、エラーメッセージを表示してください。
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
       Scanner sc = new Scanner(System.in);
-      String input = sc.nextLine();
-      if (input.isEmpty()) {
-        System.out.println("配列が空です");
-      } else {
-        try {
-          int[] nums = Arrays.stream(input.split(" "))
-                      .mapToInt(Integer::parseInt)
-                      .toArray();
+      System.out.println("数値を入力してください");
+      int N = sc.nextInt();
 
-
-          for (int i = 0; i < nums[0]; i++) {
-            String line = sc.nextLine();
-            long result = Arrays.stream(line.split(" ")).mapToInt(Integer::parseInt).filter(n -> n == nums[2]).count();
-            System.out.println(result);
-          }
-
-
-        } catch (NumberFormatException e) {
-          System.out.println("不正な入力があります: " + e.getMessage());
-        }
+      try {
+        int result = 10 / N;
+        System.out.println(String.format("徐算結果: %s", result));
+      } catch (ArithmeticException e) {
+        System.out.println("エラー / 0で割ることはできません: " + e.getMessage());
       }
 
       sc.close();
