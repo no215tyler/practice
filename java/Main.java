@@ -1,40 +1,42 @@
-// 問題 14: HashSet の使用
-// HashSetを使って、ユーザーが入力する整数を格納します。
-// 同じ整数が入力された場合は、格納されません。
-// すべての整数を表示するプログラムを作成してください。
+// 問題 15: HashMap の使用
+// ユーザーに国名とその首都名を入力してもらい、それをHashMapに保存します。
+// すべての国と首都名のペアを表示するプログラムを作成してください。
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
       int prompt = 0;
-      Set<Integer> nums = new HashSet<>();
+      Map<String, String> lists = new HashMap<>();
       Scanner sc = new Scanner(System.in);
       while (prompt != 3) {
-        System.out.println("プロンプトを入力してください\n【1】: 追加\n【2】: 表示\n【3】: プログラム終了");
+        System.out.println("プロンプトを入力してください\n【1】: 国名&首都を追加\n【2】: 一覧表示\n【3】: プログラム終了");
         prompt = Integer.parseInt(sc.nextLine());
         switch (prompt) {
           case 1:
-            addNums(nums);
+            addCountry(lists);
             break;
           case 2:
-            putsDisplay(nums);
+            putsDisplay(lists);
             break;
         }
       }
       sc.close();
     }
 
-    public static Set<Integer> addNums(Set<Integer> list) {
-      System.out.println("数値を入力してください");
+    public static Map<String, String> addCountry(Map<String, String> list) {
       Scanner sc = new Scanner(System.in);
-      list.add(sc.nextInt());
-      // 配列を昇順ソート
-      list.stream().sorted();
+      System.out.println("国名を入力してください");
+      String country = sc.nextLine();
+      System.out.println(String.format("%sの首都を入力してください", country));
+      String capitalCities = sc.nextLine();
+      list.put(country, capitalCities);
       return list;
     }
 
-    public static void putsDisplay(Set<Integer> list) {
-      list.stream().forEach(System.out::println);
+    public static void putsDisplay(Map<String, String> list) {
+      for (Map.Entry<String, String> entry : list.entrySet()) {
+        System.out.println(String.format("%sの首都: %s", entry.getKey(), entry.getValue()));
+      }
     }
 }
 
