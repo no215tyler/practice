@@ -1,33 +1,39 @@
-// 問題 12: 独自の例外の定義
-// NegativeValueExceptionという独自の例外を定義し、ユーザーに入力された値が負の場合にその例外をスローするメソッドを作成してください。
-// 入力された値が正の場合は、その値を表示するようにしてください。
+// 問題 13: ArrayList の使用
+// ユーザーから名前を入力してもらい、それをArrayListに追加していきます。
+// その後、リストにある全ての名前を表示するプログラムを作成してください。
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
+      int prompt = 0;
+      List<String> users = new ArrayList<>();
       Scanner sc = new Scanner(System.in);
-      System.out.println("数値を入力してください");
-      int N = sc.nextInt();
-
-      try {
-        putsDisplay(N);
-      } catch (NegativeValueException e) {
-        System.out.println(e.getMessage());
+      while (prompt != 3) {
+        System.out.println("プロンプトを入力してください\n【1】: ユーザー追加\n【2】: ユーザー表示\n【3】: プログラム終了");
+        prompt = Integer.parseInt(sc.nextLine());
+        switch (prompt) {
+          case 1:
+            addUser(users);
+            break;
+          case 2:
+            putsDisplay(users);
+            break;
+        }
       }
-
       sc.close();
     }
 
-    public static void putsDisplay(int n) throws NegativeValueException {
-      if (n < 0) {
-        throw new NegativeValueException("入力エラー: 負の数が入力されました。正の数を入力してください。");
+    public static List<String> addUser(List<String> list) {
+      System.out.println("ユーザー名を入力してください");
+      Scanner sc = new Scanner(System.in);
+      list.add(sc.nextLine());
+      return list;
+    }
+
+    public static void putsDisplay(List<String> list) {
+      for (int i = 1; i <= list.size(); i++) {
+        System.out.println(String.format("userid %d: %s", i, list.get(i - 1)));
       }
-      System.out.println(n);
     }
 }
 
-class NegativeValueException extends Exception {
-  public NegativeValueException(String message) {
-    super(message);
-  }
-}
