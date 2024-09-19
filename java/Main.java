@@ -64,3 +64,29 @@ public class Main {
     sc.close();
   }
 }
+
+// 【解答例】
+// Scanner sc = new Scanner(System.in);
+
+//         int b = sc.nextInt();
+
+//         int n = sc.nextInt();
+//         for (int i = 0; i < n; i++) {
+//             int a = sc.nextInt();
+
+//             String result = "blank";
+//             if (a == b) {
+//                 result = "first";
+//             } else if (Math.abs(a - b) == 1) {
+//                 result = "adjacent";
+//             } else if (a % 10000 == b % 10000) {
+//                 result = "second";
+//             } else if (a % 1000 == b % 1000) {
+//                 result = "third";
+//             }
+
+//             System.out.println(result);
+
+// 【解説】
+// Math クラスの abs メソッドを用いると、絶対値を取得することが出来ます。
+// 当選番号と宝くじの番号の下 4 桁が一致しているかどうかを確認するには、両者を 10000 で割った余りを比較すればよいです。下 3 桁についても同様に、1000 で割った余りを比較すればよいです。
