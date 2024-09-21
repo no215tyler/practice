@@ -4,198 +4,117 @@ public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
 
-    String[] inputNK = sc.nextLine().split(" ");
-    int N = Integer.parseInt(inputNK[0]);
-    int K = Integer.parseInt(inputNK[1]);
+    int[] inputLine = Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
 
-    Map<Integer, User> members = new HashMap<>();
+    // 初期入力
+    int N = inputLine[0];
+    int K = inputLine[1];
 
-    // 会計人数カウント用
-    int payCnt = 0;
+    // 勇者リスト
+    List<Braver> bravers = new ArrayList<>();
 
+    // 勇者追加
     for (int i = 0; i < N; i++) {
-      int age = Integer.parseInt(sc.nextLine());
-      User user = new User(age, false, 0);
-      members.put(i, user);
+      int[] status = Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+      bravers.add(new Braver(status));
     }
 
-    // オーダー処理
+    // イベント処理
     for (int i = 0; i < K; i++) {
-      String[] order = sc.nextLine().split(" ");
-      int index = Integer.parseInt(order[0]) - 1;
-      User member = members.get(index);
-      // 注文: アルコール（ビール以外）
-      if (order[1].equals("alcohol")) {
-        member.payment = member.buy(member.age, member.discount, order[1], member.payment, Integer.parseInt(order[2]));
-        member.discount = true;
+      String[] query = sc.nextLine().split(" ");
+      // イベント名の取得
+      String eventName = query[1];
+      // 対象勇者の取得
+      Braver braver = bravers.get(Integer.parseInt(query[0]) - 1);
+      List<Integer> status = new ArrayList<>();
 
-      // 注文: ビール
-      } else if (order[1].equals("0")) {
-        member.payment = member.buy(member.age, member.discount, "alcohol", member.payment, 500);
-        member.discount = true;
+      // 【イベント分岐】
+      // レベルアップ
+      if (eventName.equals("levelup")) {
+        for (int j = 2; j <= 7; j++) {
+          status.add(Integer.parseInt(query[j]));
+        }
+        braver.levelUp(braver, status);
 
-      // 注文: ソフトドリンク
-      } else if (order[1].equals("softdrink")) {
-        member.payment = member.buy(member.age, member.discount, order[1], member.payment, Integer.parseInt(order[2]));
+      // 筋力アップ
+      } else if (eventName.equals("muscle_training")) {
+        for (int j = 2; j <= 3; j++) {
+          status.add(Integer.parseInt(query[j]));
+        }
+        braver.muscleTraining(braver, status);
 
-      // 注文: フード
-      } else if (order[1].equals("food")) {
-        member.payment = member.buy(member.age, member.discount, order[1], member.payment, Integer.parseInt(order[2]));
+      // ランニング
+      } else if (eventName.equals("running")) {
+        for (int j = 2; j <= 3; j++) {
+          status.add(Integer.parseInt(query[j]));
+        }
+        braver.running(braver, status);
 
-      // 会計（退店）
-      } else if (order[1].equals("A")) {
-        member.putsPayment(member.payment);
-        payCnt += 1;
+      // 学習
+      } else if (eventName.equals("study")) {
+        status.add(Integer.parseInt(query[2]));
+        braver.study(braver, status);
+
+      // 祈る
+      } else if (eventName.equals("pray")) {
+        status.add(Integer.parseInt(query[2]));
+        braver.pray(braver, status);
       }
     }
 
-    // 終業処理
-    System.out.println(payCnt);
+    // 完了処理
+    bravers.stream().forEach(b -> {
+      System.out.println(String.format("%d %d %d %d %d %d %d", b.lv, b.hp, b.attack, b.defense, b.speed, b.intelligence, b.luck));
+    });
 
     sc.close();
   }
 }
 
-class User {
-  int age;
-  boolean discount;
-  int payment;
+class Braver {
+  int lv;
+  int hp;
+  int attack;
+  int defense;
+  int speed;
+  int intelligence;
+  int luck;
 
-  // コンストラクタ
-  public User(int age, boolean discount, int payment) {
-    this.age = age;
-    this.discount = discount;
-    this.payment = payment;
+  Braver(int[] status) {
+    this.lv = status[0];
+    this.hp = status[1];
+    this.attack = status[2];
+    this.defense = status[3];
+    this.speed = status[4];
+    this.intelligence = status[5];
+    this.luck = status[6];
   }
 
-  // 注文メソッド
-  public int buy(int age, boolean discount, String category, int payment, int price) {
-    int result = 0;
-    // アルコールの注文
-    if (category.equals("alcohol")) {
-      if (age >= 20) {
-          result = payment + price;
-      }
-    }
-
-    // ソフトドリンクの注文
-    if (category.equals("softdrink")) {
-      result = payment + price;
-    }
-
-    // 食事の注文
-    if (category.equals("food")) {
-      if (discount) {
-        result = payment + price - 200;
-      } else {
-        result = payment + price;
-      }
-    }
-    return result;
+  public void levelUp(Braver braver, List<Integer> upStatus) {
+    braver.lv += 1;
+    braver.hp += upStatus.get(0);
+    braver.attack += upStatus.get(1);
+    braver.defense += upStatus.get(2);
+    braver.speed += upStatus.get(3);
+    braver.intelligence += upStatus.get(4);
+    braver.luck += upStatus.get(5);
   }
 
-  // 会計出力
-  public void putsPayment(int payment) {
-    System.out.println(payment);
+  public void muscleTraining(Braver braver, List<Integer> upStatus) {
+    braver.hp += upStatus.get(0);
+    braver.attack += upStatus.get(1);
+  }
+
+  public void running(Braver braver, List<Integer> upStatus) {
+    braver.defense += upStatus.get(0);
+    braver.speed += upStatus.get(1);
+  }
+
+  public void study(Braver braver, List<Integer> upStatus) {
+    braver.intelligence += upStatus.get(0);
+  }
+
+  public void pray(Braver braver, List<Integer> upStatus) {
+    braver.luck += upStatus.get(0);
   }
 }
-
-// -------------------------
-//          模範解答
-// -------------------------
-// import java.util.ArrayList;
-// import java.util.Scanner;
-
-// class Customer {
-
-//     static int numOfLeft = 0;
-//     int amount;
-
-//     Customer() {
-//         amount = 0;
-//     }
-
-//     void takeFood(int m) {
-//         amount += m;
-//     }
-
-//     void takeSoftDrink(int m) {
-//         amount += m;
-//     }
-
-//     void takeAlcohol(int m) {}
-
-//     void takeAlcohol() {
-//         takeAlcohol(500);
-//     }
-
-//     void left() {
-//         numOfLeft++;
-//     }
-// }
-
-// class Adult extends Customer {
-
-//     boolean drunk;
-
-//     Adult() {
-//         super();
-//         drunk = false;
-//     }
-
-//     void takeFood(int m) {
-//         if (drunk) {
-//             m -= 200;
-//         }
-//         super.takeFood(m);
-//     }
-
-//     void takeAlcohol(int m) {
-//         drunk = true;
-//         amount += m;
-//     }
-// }
-
-// public class Main {
-
-//     public static void main(String[] args) {
-//         Scanner sc = new Scanner(System.in);
-
-//         int n = sc.nextInt();
-//         int k = sc.nextInt();
-
-//         ArrayList<Customer> customers = new ArrayList<>();
-
-//         for (int i = 0; i < n; i++) {
-//             int age = sc.nextInt();
-//             if (age < 20) {
-//                 customers.add(new Customer());
-//             } else {
-//                 customers.add(new Adult());
-//             }
-//         }
-
-//         for (int i = 0; i < k; i++) {
-//             int index = sc.nextInt() - 1;
-//             String s = sc.next();
-
-//             if (s.equals("0")) {
-//                 customers.get(index).takeAlcohol();
-//             } else if (s.equals("A")) {
-//                 System.out.println(customers.get(index).amount);
-//                 customers.get(index).left();
-//             } else {
-//                 int m = sc.nextInt();
-//                 if (s.equals("food")) {
-//                     customers.get(index).takeFood(m);
-//                 } else if (s.equals("softdrink")) {
-//                     customers.get(index).takeSoftDrink(m);
-//                 } else if (s.equals("alcohol")) {
-//                     customers.get(index).takeAlcohol(m);
-//                 }
-//             }
-//         }
-
-//         System.out.println(Customer.numOfLeft);
-//     }
-// }
