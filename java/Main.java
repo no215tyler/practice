@@ -1,120 +1,147 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
 
-    int[] inputLine = Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-
     // 初期入力
-    int N = inputLine[0];
-    int K = inputLine[1];
+    int[] input = Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+    int H = input[0];
+    int W = input[1];
+    int N = input[2];
+    int K = input[3];
 
-    // 勇者リスト
-    List<Braver> bravers = new ArrayList<>();
-
-    // 勇者追加
-    for (int i = 0; i < N; i++) {
-      int[] status = Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-      bravers.add(new Braver(status));
+    List<List<Integer>> kitMaps = new ArrayList<>();
+    for (int i = 0; i < 10; i++) {
+      List<Integer> kitMap = Arrays.stream(sc.nextLine().split(" "))
+                                        .map(Integer::parseInt)
+                                        .collect(Collectors.toList());
+      kitMaps.add(kitMap);
     }
 
-    // イベント処理
+    // ロボットの台数
+    List<Robot> robots = new ArrayList<>();
+    for (int i = 0; i < N; i++) {
+      int[] position = Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+      robots.add(new Robot(position, position[2]));
+    }
+
+    // 指定回数分のロボット移動
     for (int i = 0; i < K; i++) {
-      String[] query = sc.nextLine().split(" ");
-      // イベント名の取得
-      String eventName = query[1];
-      // 対象勇者の取得
-      Braver braver = bravers.get(Integer.parseInt(query[0]) - 1);
-      List<Integer> status = new ArrayList<>();
+      String[] move = sc.nextLine().split(" ");
+      int index = Integer.parseInt(move[0]) - 1;
+      String direction = move[1];
 
-      // 【イベント分岐】
-      // レベルアップ
-      if (eventName.equals("levelup")) {
-        for (int j = 2; j <= 7; j++) {
-          status.add(Integer.parseInt(query[j]));
-        }
-        braver.levelUp(braver, status);
+      switch (direction) {
+        case "W":
+          robots.get(index).west(robots.get(index), kitMaps, W);
+          break;
 
-      // 筋力アップ
-      } else if (eventName.equals("muscle_training")) {
-        for (int j = 2; j <= 3; j++) {
-          status.add(Integer.parseInt(query[j]));
-        }
-        braver.muscleTraining(braver, status);
+        case "E":
+          robots.get(index).east(robots.get(index), kitMaps, W);
+          break;
 
-      // ランニング
-      } else if (eventName.equals("running")) {
-        for (int j = 2; j <= 3; j++) {
-          status.add(Integer.parseInt(query[j]));
-        }
-        braver.running(braver, status);
+        case "N":
+          robots.get(index).north(robots.get(index), kitMaps, H);
+          break;
 
-      // 学習
-      } else if (eventName.equals("study")) {
-        status.add(Integer.parseInt(query[2]));
-        braver.study(braver, status);
-
-      // 祈る
-      } else if (eventName.equals("pray")) {
-        status.add(Integer.parseInt(query[2]));
-        braver.pray(braver, status);
+        case "S":
+          robots.get(index).south(robots.get(index), kitMaps, H);
+          break;
       }
     }
 
-    // 完了処理
-    bravers.stream().forEach(b -> {
-      System.out.println(String.format("%d %d %d %d %d %d %d", b.lv, b.hp, b.attack, b.defense, b.speed, b.intelligence, b.luck));
+
+    // 出力処理
+    robots.stream().forEach(r -> {
+      System.out.println(String.format("%d %d %d", r.position[0], r.position[1], r.lv));
     });
+
 
     sc.close();
   }
 }
 
-class Braver {
+class Robot {
+  int[] position;
   int lv;
-  int hp;
-  int attack;
-  int defense;
-  int speed;
-  int intelligence;
-  int luck;
 
-  Braver(int[] status) {
-    this.lv = status[0];
-    this.hp = status[1];
-    this.attack = status[2];
-    this.defense = status[3];
-    this.speed = status[4];
-    this.intelligence = status[5];
-    this.luck = status[6];
+  // コンストラクタ
+  Robot(int[] position, int lv) {
+    this.position = position;
+    this.lv = lv;
   }
 
-  public void levelUp(Braver braver, List<Integer> upStatus) {
-    braver.lv += 1;
-    braver.hp += upStatus.get(0);
-    braver.attack += upStatus.get(1);
-    braver.defense += upStatus.get(2);
-    braver.speed += upStatus.get(3);
-    braver.intelligence += upStatus.get(4);
-    braver.luck += upStatus.get(5);
+  void west(Robot robot, List<List<Integer>> kitMaps, int W) {
+    if (robot.lv == 1) {
+      robot.position[0] -= 1;
+    } else if (robot.lv == 2) {
+      robot.position[0] -= 2;
+    } else if (robot.lv == 3) {
+      robot.position[0] -= 5;
+    } else if (robot.lv >= 4) {
+      robot.position[0] -= 10;
+    }
+
+    List<Integer> position = Arrays.asList(robot.position[0], robot.position[1]);
+    long cnt = kitMaps.stream().filter(a -> a.equals(position)).count();
+    if (cnt > 0) {
+      robot.lv += 1;
+    }
   }
 
-  public void muscleTraining(Braver braver, List<Integer> upStatus) {
-    braver.hp += upStatus.get(0);
-    braver.attack += upStatus.get(1);
+  void east(Robot robot, List<List<Integer>> kitMaps, int E) {
+    if (robot.lv == 1) {
+      robot.position[0] += 1;
+    } else if (robot.lv == 2) {
+      robot.position[0] += 2;
+    } else if (robot.lv == 3) {
+      robot.position[0] += 5;
+    } else if (robot.lv >= 4) {
+      robot.position[0] += 10;
+    }
+
+    List<Integer> position = Arrays.asList(robot.position[0], robot.position[1]);
+    long cnt = kitMaps.stream().filter(a -> a.equals(position)).count();
+    if (cnt > 0) {
+      robot.lv += 1;
+    }
   }
 
-  public void running(Braver braver, List<Integer> upStatus) {
-    braver.defense += upStatus.get(0);
-    braver.speed += upStatus.get(1);
+  void north(Robot robot, List<List<Integer>> kitMaps, int N) {
+    if (robot.lv == 1) {
+      robot.position[1] -= 1;
+    } else if (robot.lv == 2) {
+      robot.position[1] -= 2;
+    } else if (robot.lv == 3) {
+      robot.position[1] -= 5;
+    } else if (robot.lv >= 4) {
+      robot.position[1] -= 10;
+    }
+
+    List<Integer> position = Arrays.asList(robot.position[0], robot.position[1]);
+    long cnt = kitMaps.stream().filter(a -> a.equals(position)).count();
+    if (cnt > 0) {
+      robot.lv += 1;
+    }
   }
 
-  public void study(Braver braver, List<Integer> upStatus) {
-    braver.intelligence += upStatus.get(0);
-  }
+  void south(Robot robot, List<List<Integer>> kitMaps, int S) {
+    if (robot.lv == 1) {
+      robot.position[1] += 1;
+    } else if (robot.lv == 2) {
+      robot.position[1] += 2;
+    } else if (robot.lv == 3) {
+      robot.position[1] += 5;
+    } else if (robot.lv >= 4) {
+      robot.position[1] += 10;
+    }
 
-  public void pray(Braver braver, List<Integer> upStatus) {
-    braver.luck += upStatus.get(0);
+    List<Integer> position = Arrays.asList(robot.position[0], robot.position[1]);
+    long cnt = kitMaps.stream().filter(a -> a.equals(position)).count();
+    if (cnt > 0) {
+      robot.lv += 1;
+    }
   }
 }
