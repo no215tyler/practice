@@ -1,50 +1,62 @@
 import java.util.*;
-import java.util.Collections;
 
 public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
 
-    int[] NKP = Arrays.stream(sc.nextLine().split(" "))
-                      .mapToInt(Integer::parseInt)
+    // 初期入力
+    int[] nums = Arrays.stream(sc.nextLine()
+                      .split(" ")).mapToInt(Integer::parseInt)
                       .toArray();
-    int N = NKP[0]; // 人数（配列内の要素数）
-    int K = NKP[1]; // イベント回数
-    int P = NKP[2]; // paiza君の身長
+    int N = nums[0];
+    int K = nums[1];
 
-    List<Integer> list = new ArrayList<>(Arrays.asList(P));
+    List<String> members = new ArrayList<>();
 
+    // 初期メンバー
     for (int i = 0; i < N; i++) {
-      list.add(Integer.parseInt(sc.nextLine()));
+      members.add(sc.nextLine());
     }
 
+    // イベント分岐
     for (int i = 0; i < K; i++) {
-      String[] input = sc.nextLine().split(" ");
-      String query = input[0];
-
-      // 追加
-      if (query.equals("join")) {
-        int height = Integer.parseInt(input[1]);
-        join(list, height);
-
-      // 並べ替え
-      } else if (query.equals("sorting")) {
-        sorting(list, P);
+      String[] query = sc.nextLine().split(" ");
+      String prompt = query[0];
+      // 握手会
+      if (prompt.equals("handshake")) {
+        handShake(members);
+      // メンバー加入
+      } else if (prompt.equals("join")) {
+        String member = query[1];
+        join(members, member);
+      // メンバー脱退
+      } else if (prompt.equals("leave")) {
+        String member = query[1];
+        leave(members, member);
       } else {
-        System.out.println("エラー: 予期せぬ挙動");
+        System.out.println("error: 予期せぬエラー");
       }
     }
 
     sc.close();
   }
 
-  static void join(List<Integer> list, int height) {
-    list.add(height);
+  static void join(List<String> members, String name) {
+    members.add(name);
   }
 
-  static void sorting(List<Integer> list, int P) {
-    Collections.sort(list);
-    int index = list.indexOf(P) + 1;
-    System.out.println(index);
+  static void leave(List<String> members, String name) {
+    int index = members.indexOf(name);
+    // 名前が存在しない場合のエラー対策
+    if (index >= 0) {
+      members.remove(index);
+    }
+  }
+
+  static void handShake(List<String> members) {
+    if (members.size() > 0) {
+      Collections.sort(members);
+      members.stream().forEach(System.out::println);
+    }
   }
 }
