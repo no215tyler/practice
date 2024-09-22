@@ -1,33 +1,50 @@
 import java.util.*;
+import java.util.Collections;
 
 public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
-    int[] input = Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-    int N = input[0];
-    int K = input[1];
 
-    List<Integer> list = new ArrayList<>();
+    int[] NKP = Arrays.stream(sc.nextLine().split(" "))
+                      .mapToInt(Integer::parseInt)
+                      .toArray();
+    int N = NKP[0]; // 人数（配列内の要素数）
+    int K = NKP[1]; // イベント回数
+    int P = NKP[2]; // paiza君の身長
+
+    List<Integer> list = new ArrayList<>(Arrays.asList(P));
 
     for (int i = 0; i < N; i++) {
       list.add(Integer.parseInt(sc.nextLine()));
     }
 
     for (int i = 0; i < K; i++) {
-      String prompt = sc.nextLine();
-      if (prompt.equals("pop")) {
-        pop(list);
-      } else if (prompt.equals("show")) {
-        show(list);
+      String[] input = sc.nextLine().split(" ");
+      String query = input[0];
+
+      // 追加
+      if (query.equals("join")) {
+        int height = Integer.parseInt(input[1]);
+        join(list, height);
+
+      // 並べ替え
+      } else if (query.equals("sorting")) {
+        sorting(list, P);
+      } else {
+        System.out.println("エラー: 予期せぬ挙動");
       }
     }
+
+    sc.close();
   }
 
-  static void pop(List<Integer> list) {
-    list.remove(0);
+  static void join(List<Integer> list, int height) {
+    list.add(height);
   }
 
-  static void show(List<Integer> list) {
-    list.stream().forEach(System.out::println);
+  static void sorting(List<Integer> list, int P) {
+    Collections.sort(list);
+    int index = list.indexOf(P) + 1;
+    System.out.println(index);
   }
 }
