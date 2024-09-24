@@ -1,23 +1,23 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
 
-    int N = Integer.parseInt(sc.nextLine());
+    int[] nums = Arrays.stream(sc.nextLine()
+                      .split(" "))
+                      .mapToInt(Integer::parseInt)
+                      .toArray();
 
-    List<Integer> list = new ArrayList<>();
-    for (int i = 0; i < N; i++) {
-      int[] nums = Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-      if (nums[0] == nums[1]) {
-        list.add(nums[0] * nums[1]);
-      } else {
-        list.add(nums[0] + nums[1]);
-      }
+    String[] strs = sc.nextLine().split("");
+
+    List<String> result = new ArrayList<>();
+    for (int i = nums[0] -1; i <= nums[1] -1; i++) {
+      result.add(strs[i]);
     }
 
-    int result = list.stream().mapToInt(Integer::intValue).sum();
-    System.out.println(result);
+    System.out.println(result.stream().collect(Collectors.joining("")));
 
     sc.close();
   }
