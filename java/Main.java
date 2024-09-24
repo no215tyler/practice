@@ -8,9 +8,11 @@ public class Main {
 
     List<Integer> list = new ArrayList<>();
     for (int i = 0; i < N; i++) {
-      int num = Integer.parseInt(sc.nextLine());
-      if (num >= 5) {
-        list.add(num);
+      int[] nums = Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+      if (nums[0] == nums[1]) {
+        list.add(nums[0] * nums[1]);
+      } else {
+        list.add(nums[0] + nums[1]);
       }
     }
 
