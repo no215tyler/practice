@@ -1,45 +1,23 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
 
-    String trgt = sc.nextLine();
-    String[] strs = sc.nextLine().split("");
-    List<String> list = new ArrayList<>();
-
-    for (int i = 1; i < strs.length; i++) {
-      List<String> bufStr = new ArrayList<>();
-      for (int j = trgt.length() - 1; j >= 0; j--) {
-        bufStr.add(strs[i - j]);
-      }
-      list.add(bufStr.stream().collect(Collectors.joining("")));
+    int N = Integer.parseInt(sc.nextLine());
+    Map<String, Integer> maps = new HashMap<>();
+    for (int i = 0; i < N; i++) {
+      String[] input = sc.nextLine().split(" ");
+      maps.put(input[0], Integer.parseInt(input[1]));
     }
 
-    long count = list.stream().filter(s -> s.equals(trgt)).count();
-    System.out.println(count);
+    List<Map.Entry<String, Integer>> entryList = new ArrayList<>(maps.entrySet());
+    entryList.sort(Map.Entry.comparingByValue());
+
+    for (Map.Entry<String, Integer> entry : entryList) {
+      System.out.println(entry.getKey());
+    }
 
     sc.close();
   }
 }
-
-// 【模範解答】
-// import java.util.Scanner;
-
-// public class Main {
-//   public static void main(String[] args) {
-//     Scanner scan = new Scanner(System.in);
-//     String pattern = scan.nextLine();
-//     String str = scan.nextLine();
-
-//     int cnt = 0;
-//     for (int i = 0; i <= str.length() - pattern.length(); i++) {
-//         String s = str.substring(i, i + pattern.length());
-//         if (s.equals(pattern)) {
-//           cnt++;
-//         }
-//     }
-//     System.out.println(cnt);
-//   }
-// }
