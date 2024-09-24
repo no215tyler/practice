@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Main {
   public static void main(String[] args) {
@@ -12,13 +11,16 @@ public class Main {
 
     String[] strs = sc.nextLine().split("");
 
-    List<String> result = new ArrayList<>();
     for (int i = nums[0] -1; i <= nums[1] -1; i++) {
-      result.add(strs[i]);
+      changeUpperCase(strs, i);
     }
 
-    System.out.println(result.stream().collect(Collectors.joining("")));
+    System.out.println(String.join("", strs));
 
     sc.close();
+  }
+
+  static void changeUpperCase(String[] strs, int index) {
+    strs[index] = strs[index].toUpperCase();
   }
 }
