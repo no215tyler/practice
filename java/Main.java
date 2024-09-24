@@ -4,23 +4,12 @@ public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
 
-    int[] nums = Arrays.stream(sc.nextLine()
-                      .split(" "))
-                      .mapToInt(Integer::parseInt)
-                      .toArray();
-
+    String trgt = sc.nextLine();
     String[] strs = sc.nextLine().split("");
 
-    for (int i = nums[0] -1; i <= nums[1] -1; i++) {
-      changeUpperCase(strs, i);
-    }
-
-    System.out.println(String.join("", strs));
+    long count = Arrays.stream(strs).filter(s -> s.equals(trgt)).count();
+    System.out.println(count);
 
     sc.close();
-  }
-
-  static void changeUpperCase(String[] strs, int index) {
-    strs[index] = strs[index].toUpperCase();
   }
 }
