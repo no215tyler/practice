@@ -5,28 +5,20 @@ public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
 
-    int N = Integer.parseInt(sc.nextLine());
-    Map<String, Integer> hash = new HashMap<>();
+    // 初期入力
+    List<String> Alphabet = new ArrayList<>(Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "N", "M", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"));
+    int X = Alphabet.indexOf(sc.nextLine());
+    int Y = Alphabet.indexOf(sc.nextLine());
+    int C = Alphabet.indexOf(sc.nextLine());
 
-    for (int i = 0; i < N; i++) {
-      String[] input = sc.nextLine().split(" ");
-      hash.merge(input[0], Integer.parseInt(input[1]), Integer::sum);
-    }
-
-    // HashMapをリストに変換
-    List<Map.Entry<String, Integer>> list = new ArrayList<>(hash.entrySet());
-
-    // 降順ソート
-    Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
-      @Override
-      public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
-        return o2.getValue().compareTo(o1.getValue());
-      }
-    });
-
-    // 出力処理
-    for (Map.Entry<String, Integer> entry : list) {
-      System.out.println(String.format("%s %d", entry.getKey(), entry.getValue()));
+    // A と D の範囲に C が含まれていれば true そうでなければ false を出力
+    // （A が D よりも後ろになる場合も false を出力）
+    if (Y < X) {
+      System.out.println(false);
+    } else if (X <= C && Y >= C) {
+      System.out.println(true);
+    } else {
+      System.out.println(false);
     }
 
     sc.close();
