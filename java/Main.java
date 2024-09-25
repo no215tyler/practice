@@ -5,46 +5,96 @@ public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
 
-    // Userのリスト
-    List<User> users = new ArrayList<>();
-
-    // User名と血液型のインスタンスをリスト化
-    int N = Integer.parseInt(sc.nextLine());
-    for (int i = 0; i < N; i++) {
-      String[] input = sc.nextLine().split(" ");
-      User user = new User(input[0], input[1]);
-      users.add(user);
+    // 五目盤の定義
+    List<List<String>> boards = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      List<String> board = new ArrayList<>(Arrays.stream(sc.nextLine().split("")).collect(Collectors.toList()));
+      boards.add(board);
     }
 
-    // 占いの定義
-    List<List<String>> lists = new ArrayList<>();
-    int M = Integer.parseInt(sc.nextLine());
-    for (int i = 0; i < M; i++) {
-      lists.add(Arrays.stream(sc.nextLine().split(" ")).collect(Collectors.toList()));
-    }
+    // 動作フラグの定義
+    boolean flg = true;
 
-    // 出力処理
-    for (User user : users) {
-      for (List<String> list : lists) {
-        int index = list.indexOf(user.bloodType) + 1;
-        if (index > 0) {
-          System.out.println(String.format("%s %s", user.name, list.get(index)));
+    // Row（行）で一致があるかチェック
+    if (flg) {
+      for (List<String> board : boards) {
+        long O = board.stream().filter(o -> o.equals("O")).count();
+        long X = board.stream().filter(o -> o.equals("X")).count();
+        if(O == 5) {
+          flg = false;
+          System.out.println("O");
+          break;
+        } else if (X == 5) {
+          flg = false;
+          System.out.println("X");
           break;
         }
       }
     }
 
+    // Column（列）で一致があるかチェック
+    if (flg) {
+      List<String> bufBoard = new ArrayList<>();
+      for (int i = 0; i < 5; i++) {
+        bufBoard.add(boards.get(0).get(i));
+        bufBoard.add(boards.get(1).get(i));
+        bufBoard.add(boards.get(2).get(i));
+        bufBoard.add(boards.get(3).get(i));
+        bufBoard.add(boards.get(4).get(i));
+        long O = bufBoard.stream().filter(s -> s.equals("O")).count();
+        long X = bufBoard.stream().filter(s -> s.equals("X")).count();
+        if(O == 5) {
+          flg = false;
+          System.out.println("O");
+          break;
+        } else if (X == 5) {
+          flg = false;
+          System.out.println("X");
+          break;
+        }
+        bufBoard.clear();
+      }
+    }
+
+    // 斜めで一致があるかチェック左上〜右下
+    if (flg) {
+      List<String> lists = new ArrayList<>();
+      for (int i = 0; i < 5; i++) {
+        lists.add(boards.get(i).get(i));
+      }
+      long O = lists.stream().filter(s -> s.equals("O")).count();
+      long X = lists.stream().filter(s -> s.equals("X")).count();
+      if(O == 5) {
+        flg = false;
+        System.out.println("O");
+      } else if (X == 5) {
+        flg = false;
+        System.out.println("X");
+      }
+    }
+
+    // 斜めで一致があるかチェック右上〜左下
+    if (flg) {
+      List<String> lists = new ArrayList<>();
+      for (int i = 0; i < 5; i++) {
+        lists.add(boards.get(i).get(4 - i));
+      }
+      long O = lists.stream().filter(s -> s.equals("O")).count();
+      long X = lists.stream().filter(s -> s.equals("X")).count();
+      if(O == 5) {
+        flg = false;
+        System.out.println("O");
+      } else if (X == 5) {
+        flg = false;
+        System.out.println("X");
+      }
+    }
+
+    // 引き分け判定（上記のチェックで flg が false にならなければDraw）
+    if (flg){
+      System.out.println("D");
+    }
 
     sc.close();
-  }
-}
-
-class User {
-  String name;
-  String bloodType;
-
-  public User(String name, String bloodType) {
-    this.name = name;
-    this.bloodType = bloodType;
   }
 }
