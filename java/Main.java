@@ -1,22 +1,20 @@
+// 問題 18: Listの使用
+// 文字列の`ArrayList`を作成し、いくつかの要素を追加して、順番通りにすべての要素を出力してください。
+// また、3番目の要素を削除してから、再度全要素を出力してください。
 import java.util.*;
 
 public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
 
-    int N = Integer.parseInt(sc.nextLine());
-    Map<String, Integer> maps = new HashMap<>();
-    for (int i = 0; i < N; i++) {
-      String[] input = sc.nextLine().split(" ");
-      maps.put(input[0], Integer.parseInt(input[1]));
-    }
+    List<String> list = new ArrayList<>(Arrays.asList("a", "b", "c", "d", "e"));
 
-    List<Map.Entry<String, Integer>> entryList = new ArrayList<>(maps.entrySet());
-    entryList.sort(Map.Entry.comparingByValue());
+    // リスト要素を全部出力
+    list.stream().forEach(System.out::println);
 
-    for (Map.Entry<String, Integer> entry : entryList) {
-      System.out.println(entry.getKey());
-    }
+    // 3番目の要素を削除した後、リスト要素を全部出力
+    list.remove(2);
+    list.stream().forEach(System.out::println);
 
     sc.close();
   }
