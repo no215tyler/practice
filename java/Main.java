@@ -1,18 +1,41 @@
-// 問題 19: Setの使用
-// `HashSet`を使って、ユーザーが入力した数値の中から重複しない数値を保存し、その後にすべてのユニークな数値を出力するプログラムを作成してください。
+// 問題 20: Mapの使用
+// フルーツとその価格を格納する`HashMap`を作成し、いくつかのキーと値のペアを追加してください。
+// その後、特定のフルーツの価格を取得して出力し、すべてのキーと値のペアをループで出力するプログラムを作成してください。
 import java.util.*;
 
 public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
 
-    Set<Integer> setMaps = new HashSet<>();
-    for (int i = 1; i <= 10; i++) {
-      System.out.println(String.format("%d 回目入力待ち/10回中", i));
-      setMaps.add(sc.nextInt());
+    Map<String, Integer> fruitsStore = new HashMap<>();
+
+    int query = 1;
+    while (query != 0) {
+      try {
+        System.out.println("【果物名】と【価格】を半角スペース区切りで入力してください");
+        String[] input = sc.nextLine().split(" ");
+        fruitsStore.put(input[0], Integer.parseInt(input[1]));
+        System.out.println("終了する場合は【0】を入力してください");
+        query = Integer.parseInt(sc.nextLine());
+      } catch (NumberFormatException e) {
+        // エラーを無視
+      }
     }
 
-    setMaps.stream().sorted().forEach(System.out::println);
+    // HashMapをリストへ変換し
+    List<Map.Entry<String, Integer>> list = new ArrayList<>(fruitsStore.entrySet());
+    // 価格順に昇順ソート
+    Collections.sort(list, new Comparator<Map.Entry<String, Integer>>(){
+      public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+        return o1.getValue().compareTo(o2.getValue());
+      }
+    });
+
+    // 出力処理
+    for (Map.Entry<String, Integer> entry : list) {
+      System.out.println(String.format("%s : %d", entry.getKey(), entry.getValue()));
+    }
+
 
     sc.close();
   }
