@@ -1,20 +1,18 @@
-// 問題 18: Listの使用
-// 文字列の`ArrayList`を作成し、いくつかの要素を追加して、順番通りにすべての要素を出力してください。
-// また、3番目の要素を削除してから、再度全要素を出力してください。
+// 問題 19: Setの使用
+// `HashSet`を使って、ユーザーが入力した数値の中から重複しない数値を保存し、その後にすべてのユニークな数値を出力するプログラムを作成してください。
 import java.util.*;
 
 public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
 
-    List<String> list = new ArrayList<>(Arrays.asList("a", "b", "c", "d", "e"));
+    Set<Integer> setMaps = new HashSet<>();
+    for (int i = 1; i <= 10; i++) {
+      System.out.println(String.format("%d 回目入力待ち/10回中", i));
+      setMaps.add(sc.nextInt());
+    }
 
-    // リスト要素を全部出力
-    list.stream().forEach(System.out::println);
-
-    // 3番目の要素を削除した後、リスト要素を全部出力
-    list.remove(2);
-    list.stream().forEach(System.out::println);
+    setMaps.stream().sorted().forEach(System.out::println);
 
     sc.close();
   }
