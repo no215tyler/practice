@@ -1,26 +1,50 @@
 import java.util.*;
-
+import java.util.stream.Collectors;
 
 public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
 
-    // 初期入力
-    List<String> Alphabet = new ArrayList<>(Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "N", "M", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"));
-    int X = Alphabet.indexOf(sc.nextLine());
-    int Y = Alphabet.indexOf(sc.nextLine());
-    int C = Alphabet.indexOf(sc.nextLine());
+    // Userのリスト
+    List<User> users = new ArrayList<>();
 
-    // A と D の範囲に C が含まれていれば true そうでなければ false を出力
-    // （A が D よりも後ろになる場合も false を出力）
-    if (Y < X) {
-      System.out.println(false);
-    } else if (X <= C && Y >= C) {
-      System.out.println(true);
-    } else {
-      System.out.println(false);
+    // User名と血液型のインスタンスをリスト化
+    int N = Integer.parseInt(sc.nextLine());
+    for (int i = 0; i < N; i++) {
+      String[] input = sc.nextLine().split(" ");
+      User user = new User(input[0], input[1]);
+      users.add(user);
     }
 
+    // 占いの定義
+    List<List<String>> lists = new ArrayList<>();
+    int M = Integer.parseInt(sc.nextLine());
+    for (int i = 0; i < M; i++) {
+      lists.add(Arrays.stream(sc.nextLine().split(" ")).collect(Collectors.toList()));
+    }
+
+    // 出力処理
+    for (User user : users) {
+      for (List<String> list : lists) {
+        int index = list.indexOf(user.bloodType) + 1;
+        if (index > 0) {
+          System.out.println(String.format("%s %s", user.name, list.get(index)));
+          break;
+        }
+      }
+    }
+
+
     sc.close();
+  }
+}
+
+class User {
+  String name;
+  String bloodType;
+
+  public User(String name, String bloodType) {
+    this.name = name;
+    this.bloodType = bloodType;
   }
 }
