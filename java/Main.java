@@ -6,51 +6,86 @@ public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
 
-    int[] input = Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-    int N = input[0];
-    int M = input[1];
+    int[] inputNums = Arrays.stream(sc.nextLine()
+                            .split(" "))
+                            .mapToInt(Integer::parseInt)
+                            .toArray();
+    int N = inputNums[0]; // プレイヤー人数
+    int K = inputNums[1]; // 単語リスト数
+    int M = inputNums[2]; // しりとりの回数
 
-    List<Integer> seat = new ArrayList<>(IntStream.rangeClosed(1, N).boxed().collect(Collectors.toList()));
+    // プレイヤー定義
+    List<Integer> players = new ArrayList<>(IntStream.rangeClosed(1, N).boxed().collect(Collectors.toList()));
 
-    for (int i = 1; i <= M; i++) {
-      int[] line = Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-      int groupAmount = line[0];
-      int seatIndex = line[1];
-      takeASeat(seat, groupAmount, seatIndex);
+    // 単語の定義
+    List<String> wordList = new ArrayList<>();
+    for (int i = 0; i < K; i++) {
+      wordList.add(sc.nextLine());
     }
 
-    // seat内の「0 = 着台数」をカウント
-    long cnt = seat.stream().filter(s -> s == 0).count();
+    // 単語末尾の変数定義
+    List<String> lastStr = new ArrayList<>();
 
-    // 結果を出力
-    System.out.println(cnt);
+    // 脱落フラグの定義
+    boolean dropout = true;
+
+    // 指定回数分しりとりをプレイ
+    for (int i = 0; i < M; i++) {
+      int index = i % players.size(); // (i >= players.size()) ? (i % players.size()) : i;
+      if (i > 0 && dropout && index != 0) {
+        index -= 1;
+      }
+
+      if (i > 0 && dropout && index == 0) {
+        index = players.size() - 1;
+      }
+
+      String word = sc.nextLine();
+      dropout = checkRule(players, index, wordList, word, lastStr, dropout);
+
+    }
+
+    // 出力処理
+    System.out.println(players.size());
+    players.stream().forEach(System.out::println);
 
     sc.close();
   }
 
-  static void takeASeat(List<Integer> seat, int n, int startIndex) {
-    // n: ループ回数 = グループの人数
-    // startIndex: 着席の開始番号
-
-    // 着席可否をチェックし、着席不可なら処理をスキップ
-    if (!takeableSeat(seat, n, startIndex)) {
-      for (int i = 0; i < n; i++) {
-        int index = (startIndex + i) >= seat.size() ? ((startIndex + i) - seat.size()) : (startIndex + i);
-        // 着席可能なら番号をインデックス番号を「0」に変更
-        seat.set(index, 0);
-      }
+  static boolean checkRule(List<Integer> players, int index, List<String> wordList, String word, List<String> lastStr, boolean dropout) {
+    int wordIndex = wordList.indexOf(word);
+    String[] strs = word.split("");
+    int lastIndex = strs.length - 1;
+    lastStr.clear();
+    lastStr.add(strs[lastIndex]);
+    // 2. 「dropout: false」の場合は前回の単語末尾との一致を判定 ### 「dropout: true」の場合は（脱落者がいれば）このルールは無視
+    if (!dropout && !(strs[lastIndex].equals(lastStr.get(0)))) {
+      players.remove(index);
+      dropout = true;
+      return dropout;
     }
-  }
-
-  static boolean takeableSeat(List<Integer> seat, int n, int startIndex) {
-    boolean flg = false;
-    for (int i = 0; i < n; i++) {
-      int index = (startIndex + i) >= seat.size() ? ((startIndex + i) - seat.size()) : (startIndex + i);
-      if (seat.get(index) == 0) {
-        flg = true;
-        break;
-      }
+    // 1. 発言ワードがリストに存在しなければ脱落 -> dropout: trueに変更
+    // 3. いままでに発言された単語を発言した場合は脱落 -> dropout: trueに変更
+    if (wordIndex >= 0) {
+      // ルール通りなら単語リストのワードを「.」に変更
+      wordList.set(wordIndex, ".");
+    } else {
+      players.remove(index);
+      dropout = true;
+      return dropout;
     }
-    return flg;
+
+    // 4. 「z」で終了するワードを発言したら脱落 -> dropout: falseに変更
+    if (strs[lastIndex].equals("z")) {
+      players.remove(index);
+      dropout = true;
+      return dropout;
+    }
+
+    // ルール違反がなければdropoutフラグをfalseにして処理終了
+    if (dropout) {
+      dropout = false;
+    }
+    return dropout;
   }
 }
