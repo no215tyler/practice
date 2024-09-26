@@ -1,100 +1,56 @@
 import java.util.*;
+import java.util.stream.IntStream;
 import java.util.stream.Collectors;
 
 public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
 
-    // 五目盤の定義
-    List<List<String>> boards = new ArrayList<>();
-    for (int i = 0; i < 5; i++) {
-      List<String> board = new ArrayList<>(Arrays.stream(sc.nextLine().split("")).collect(Collectors.toList()));
-      boards.add(board);
+    int[] input = Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+    int N = input[0];
+    int M = input[1];
+
+    List<Integer> seat = new ArrayList<>(IntStream.rangeClosed(1, N).boxed().collect(Collectors.toList()));
+
+    for (int i = 1; i <= M; i++) {
+      int[] line = Arrays.stream(sc.nextLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+      int groupAmount = line[0];
+      int seatIndex = line[1];
+      takeASeat(seat, groupAmount, seatIndex);
     }
 
-    // 動作フラグの定義
-    boolean flg = true;
+    // seat内の「0 = 着台数」をカウント
+    long cnt = seat.stream().filter(s -> s == 0).count();
 
-    // Row（行）で一致があるかチェック
-    if (flg) {
-      for (List<String> board : boards) {
-        long O = board.stream().filter(o -> o.equals("O")).count();
-        long X = board.stream().filter(o -> o.equals("X")).count();
-        if(O == 5) {
-          flg = false;
-          System.out.println("O");
-          break;
-        } else if (X == 5) {
-          flg = false;
-          System.out.println("X");
-          break;
-        }
-      }
-    }
-
-    // Column（列）で一致があるかチェック
-    if (flg) {
-      List<String> bufBoard = new ArrayList<>();
-      for (int i = 0; i < 5; i++) {
-        bufBoard.add(boards.get(0).get(i));
-        bufBoard.add(boards.get(1).get(i));
-        bufBoard.add(boards.get(2).get(i));
-        bufBoard.add(boards.get(3).get(i));
-        bufBoard.add(boards.get(4).get(i));
-        long O = bufBoard.stream().filter(s -> s.equals("O")).count();
-        long X = bufBoard.stream().filter(s -> s.equals("X")).count();
-        if(O == 5) {
-          flg = false;
-          System.out.println("O");
-          break;
-        } else if (X == 5) {
-          flg = false;
-          System.out.println("X");
-          break;
-        }
-        bufBoard.clear();
-      }
-    }
-
-    // 斜めで一致があるかチェック左上〜右下
-    if (flg) {
-      List<String> lists = new ArrayList<>();
-      for (int i = 0; i < 5; i++) {
-        lists.add(boards.get(i).get(i));
-      }
-      long O = lists.stream().filter(s -> s.equals("O")).count();
-      long X = lists.stream().filter(s -> s.equals("X")).count();
-      if(O == 5) {
-        flg = false;
-        System.out.println("O");
-      } else if (X == 5) {
-        flg = false;
-        System.out.println("X");
-      }
-    }
-
-    // 斜めで一致があるかチェック右上〜左下
-    if (flg) {
-      List<String> lists = new ArrayList<>();
-      for (int i = 0; i < 5; i++) {
-        lists.add(boards.get(i).get(4 - i));
-      }
-      long O = lists.stream().filter(s -> s.equals("O")).count();
-      long X = lists.stream().filter(s -> s.equals("X")).count();
-      if(O == 5) {
-        flg = false;
-        System.out.println("O");
-      } else if (X == 5) {
-        flg = false;
-        System.out.println("X");
-      }
-    }
-
-    // 引き分け判定（上記のチェックで flg が false にならなければDraw）
-    if (flg){
-      System.out.println("D");
-    }
+    // 結果を出力
+    System.out.println(cnt);
 
     sc.close();
+  }
+
+  static void takeASeat(List<Integer> seat, int n, int startIndex) {
+    // n: ループ回数 = グループの人数
+    // startIndex: 着席の開始番号
+
+    // 着席可否をチェックし、着席不可なら処理をスキップ
+    if (!takeableSeat(seat, n, startIndex)) {
+      for (int i = 0; i < n; i++) {
+        int index = (startIndex + i) >= seat.size() ? ((startIndex + i) - seat.size()) : (startIndex + i);
+        // 着席可能なら番号をインデックス番号を「0」に変更
+        seat.set(index, 0);
+      }
+    }
+  }
+
+  static boolean takeableSeat(List<Integer> seat, int n, int startIndex) {
+    boolean flg = false;
+    for (int i = 0; i < n; i++) {
+      int index = (startIndex + i) >= seat.size() ? ((startIndex + i) - seat.size()) : (startIndex + i);
+      if (seat.get(index) == 0) {
+        flg = true;
+        break;
+      }
+    }
+    return flg;
   }
 }
