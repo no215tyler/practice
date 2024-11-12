@@ -1,17 +1,22 @@
 <?php
   $num = trim(fgets(STDIN));
-
-  checkFizzBuzz($num);
+  for ($i = 1; $i <= $num; $i++) {
+    checkFizzBuzz($i);
+  }
 
   function checkFizzBuzz($num) {
-    if ($num % 5 === 0 && $num % 3 === 0) {
-      echo "FizzBuzz\n";
-    } else if ($num % 5 === 0) {
-      echo "Buzz\n";
-    } else if ($num % 3 === 0) {
-      echo "Fizz\n";
-    } else {
-      echo $num . "\n";
+    switch ($num) {
+      case ($num % 5 === 0 && $num % 3 === 0):
+        echo "Fizz Buzz\n";
+        break;
+      case ($num % 5 === 0):
+        echo "Buzz\n";
+        break;
+      case ($num % 3 === 0):
+        echo "Fizz\n";
+        break;
+      default:
+        echo $num . "\n";
     }
   }
 ?>
