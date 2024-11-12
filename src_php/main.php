@@ -1,7 +1,7 @@
 <?php
-  $S = strval(trim(fgets(STDIN)));
-  $T = strval(trim(fgets(STDIN)));
-  $result = bcmul($S, $T);
+  $S = gmp_init(trim(fgets(STDIN)));
+  $T = gmp_init(trim(fgets(STDIN)));
+  $result = gmp_mul($S, $T);
   echo $result;
   echo "\n";
 ?>
