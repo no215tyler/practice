@@ -1,12 +1,17 @@
 <?php
-  $input = explode(" ", trim(fgets(STDIN)));
-  $x = $input[0];
-  $y = $input[1];
-  $z = $input[2];
+  $num = trim(fgets(STDIN));
 
-  if ($z >= 10 || ($x >= 10 && $y >= 10)) {
-    echo "YES\n";
-  } else {
-    echo "NO\n";
+  checkFizzBuzz($num);
+
+  function checkFizzBuzz($num) {
+    if ($num % 5 === 0 && $num % 3 === 0) {
+      echo "FizzBuzz\n";
+    } else if ($num % 5 === 0) {
+      echo "Buzz\n";
+    } else if ($num % 3 === 0) {
+      echo "Fizz\n";
+    } else {
+      echo $num . "\n";
+    }
   }
 ?>
