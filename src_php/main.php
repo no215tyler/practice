@@ -1,10 +1,13 @@
 <?php
   $N = trim(fgets(STDIN));
+  $users = [];
   for ($i = 0; $i < $N; $i++) {
     $parsonInfo = explode(" ", trim(fgets(STDIN)));
     $user = new User($parsonInfo[0], $parsonInfo[1], $parsonInfo[2], $parsonInfo[3]);
-    $user->output();
+    $users[] = $user;
   }
+  $searchParam = trim(fgets(STDIN));
+  User::searchUser($users, $searchParam);
 
   class User {
     private $nickname;
@@ -26,6 +29,14 @@
       echo "birth : " . $this->birth . "\n";
       echo "state : " . $this->state . "\n";
       echo "}\n";
+    }
+
+    public static function searchUser($users, $param) {
+      foreach($users as $user) {
+        if ($user->old == $param) {
+          echo $user->nickname . "\n";
+        }
+      }
     }
   }
 ?>
