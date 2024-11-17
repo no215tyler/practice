@@ -2,48 +2,108 @@
   $input = explode(" ", trim(fgets(STDIN)));
   $N = $input[0];
   $K = $input[1];
-  $users = [];
+
+  // 客リスト
+  $customers = [];
+  // 客数分のインスタンスを生成
   for ($i = 0; $i < $N; $i++) {
-    $parsonInfo = explode(" ", trim(fgets(STDIN)));
-    $user = new User($parsonInfo[0], $parsonInfo[1], $parsonInfo[2], $parsonInfo[3]);
-    $users[] = $user;
+    $age = trim(fgets(STDIN));
+    if ($age >= 20) {
+      $customers[] = new Adult($age);
+    } else {
+      $customers[] = new Customer($age);
+    }
   }
+
+  // 注文
   for ($i = 0; $i < $K; $i++) {
-    $changeParams = explode(" ", trim(fgets(STDIN)));
-    $idx = $changeParams[0] - 1;
-    $users[$idx]->changeName($changeParams[1]);
-  }
-  foreach ($users as $user) {
-    $user->output();
+    $orders = explode(" ", trim(fgets(STDIN)));
+    $index = $orders[0] - 1;
+    $order = $orders[1];
+    $price = $orders[2];
+    try {
+      if (!($customers[$index]->isAdult()) && $order === "alcohol") {
+        throw new Exception("未成年のアルコール注文です\n");
+      }
+      order($customers[$index], $order, $price);
+    } catch (Exception $e) {
+      // echo $e->getMessage();
+    }
   }
 
-  class User {
-    private $nickname;
-    private $old;
-    private $birth;
-    private $state;
+  // 客ごとの会計
+  foreach ($customers as $customer) {
+    echo $customer->getAmount() . "\n";
+  }
 
-    public function __construct($nickname, $old, $birth, $state) {
-      $this->nickname = $nickname;
-      $this->old = $old;
-      $this->birth = $birth;
-      $this->state = $state;
+
+  ##############
+  # メソッド定義 #
+  ##############
+
+  function order($customer, $order, $price) {
+    switch ($order) {
+      case "food":
+        $customer->orderFood($price);
+        break;
+
+      case "softdrink":
+        $customer->orderSoftdrink($price);
+        break;
+
+      case "alcohol":
+        $customer->orderAlcohol($price);
+        break;
+
+      default:
+    }
+  }
+
+
+  class Customer {
+    private $amount = 0;
+    private $age;
+    protected $discountFlg = false;
+    protected $adult = false;
+
+    public function __construct($age) {
+      $this->amount = 0;
+      $this->age = $age;
     }
 
-    public function output() {
-      echo $this->nickname . " " . $this->old . " " . $this->birth . " " . $this->state . "\n";
+    public function getAmount() {
+      return $this->amount;
     }
 
-    public static function searchUser($users, $param) {
-      foreach($users as $user) {
-        if ($user->old == $param) {
-          echo $user->nickname . "\n";
-        }
+    public function setAmount($amount) {
+      $this->amount += $amount;
+    }
+
+    public function isAdult() {
+      return $this->adult;
+    }
+
+    public function orderFood($price) {
+      if ($this->discountFlg) {
+        $this->amount += $price - 200;
+      } else {
+        $this->amount += $price;
       }
     }
 
-    public function changeName($newName) {
-      $this->nickname = $newName;
+    public function orderSoftdrink($price) {
+      $this->amount += $price;
+    }
+  }
+
+  class Adult extends Customer {
+    public function __construct() {
+      $this->adult = true;
+    }
+
+    public function orderAlcohol($price) {
+      $this->setAmount($price);
+      $this->discountFlg = true;
     }
   }
 ?>
