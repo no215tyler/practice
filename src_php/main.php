@@ -1,13 +1,21 @@
 <?php
-  $N = trim(fgets(STDIN));
+  $input = explode(" ", trim(fgets(STDIN)));
+  $N = $input[0];
+  $K = $input[1];
   $users = [];
   for ($i = 0; $i < $N; $i++) {
     $parsonInfo = explode(" ", trim(fgets(STDIN)));
     $user = new User($parsonInfo[0], $parsonInfo[1], $parsonInfo[2], $parsonInfo[3]);
     $users[] = $user;
   }
-  $searchParam = trim(fgets(STDIN));
-  User::searchUser($users, $searchParam);
+  for ($i = 0; $i < $K; $i++) {
+    $changeParams = explode(" ", trim(fgets(STDIN)));
+    $idx = $changeParams[0] - 1;
+    $users[$idx]->changeName($changeParams[1]);
+  }
+  foreach ($users as $user) {
+    $user->output();
+  }
 
   class User {
     private $nickname;
@@ -23,12 +31,7 @@
     }
 
     public function output() {
-      echo "User{\n";
-      echo "nickname : " . $this->nickname . "\n";
-      echo "old : " . $this->old . "\n";
-      echo "birth : " . $this->birth . "\n";
-      echo "state : " . $this->state . "\n";
-      echo "}\n";
+      echo $this->nickname . " " . $this->old . " " . $this->birth . " " . $this->state . "\n";
     }
 
     public static function searchUser($users, $param) {
@@ -37,6 +40,10 @@
           echo $user->nickname . "\n";
         }
       }
+    }
+
+    public function changeName($newName) {
+      $this->nickname = $newName;
     }
   }
 ?>
